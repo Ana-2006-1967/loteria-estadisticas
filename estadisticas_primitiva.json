@@ -1,0 +1,461 @@
+{
+  "ultima_actualizacion": "14/08/2026 11:48",
+  "total_sorteos": 4159,
+  "fecha_primer_sorteo": "17/10/1985",
+  "fecha_ultimo_sorteo": "9/07/2026",
+  "numeros": [
+    {
+      "numero": 39,
+      "frecuencia": 544,
+      "porcentaje": 13.08
+    },
+    {
+      "numero": 38,
+      "frecuencia": 543,
+      "porcentaje": 13.06
+    },
+    {
+      "numero": 1,
+      "frecuencia": 539,
+      "porcentaje": 12.96
+    },
+    {
+      "numero": 45,
+      "frecuencia": 535,
+      "porcentaje": 12.86
+    },
+    {
+      "numero": 3,
+      "frecuencia": 532,
+      "porcentaje": 12.79
+    },
+    {
+      "numero": 40,
+      "frecuencia": 531,
+      "porcentaje": 12.77
+    },
+    {
+      "numero": 41,
+      "frecuencia": 531,
+      "porcentaje": 12.77
+    },
+    {
+      "numero": 30,
+      "frecuencia": 529,
+      "porcentaje": 12.72
+    },
+    {
+      "numero": 5,
+      "frecuencia": 527,
+      "porcentaje": 12.67
+    },
+    {
+      "numero": 23,
+      "frecuencia": 525,
+      "porcentaje": 12.62
+    },
+    {
+      "numero": 47,
+      "frecuencia": 525,
+      "porcentaje": 12.62
+    },
+    {
+      "numero": 14,
+      "frecuencia": 523,
+      "porcentaje": 12.58
+    },
+    {
+      "numero": 10,
+      "frecuencia": 522,
+      "porcentaje": 12.55
+    },
+    {
+      "numero": 15,
+      "frecuencia": 522,
+      "porcentaje": 12.55
+    },
+    {
+      "numero": 6,
+      "frecuencia": 521,
+      "porcentaje": 12.53
+    },
+    {
+      "numero": 12,
+      "frecuencia": 520,
+      "porcentaje": 12.5
+    },
+    {
+      "numero": 36,
+      "frecuencia": 520,
+      "porcentaje": 12.5
+    },
+    {
+      "numero": 22,
+      "frecuencia": 519,
+      "porcentaje": 12.48
+    },
+    {
+      "numero": 7,
+      "frecuencia": 517,
+      "porcentaje": 12.43
+    },
+    {
+      "numero": 11,
+      "frecuencia": 517,
+      "porcentaje": 12.43
+    },
+    {
+      "numero": 28,
+      "frecuencia": 515,
+      "porcentaje": 12.38
+    },
+    {
+      "numero": 37,
+      "frecuencia": 515,
+      "porcentaje": 12.38
+    },
+    {
+      "numero": 29,
+      "frecuencia": 511,
+      "porcentaje": 12.29
+    },
+    {
+      "numero": 35,
+      "frecuencia": 511,
+      "porcentaje": 12.29
+    },
+    {
+      "numero": 19,
+      "frecuencia": 510,
+      "porcentaje": 12.26
+    },
+    {
+      "numero": 43,
+      "frecuencia": 510,
+      "porcentaje": 12.26
+    },
+    {
+      "numero": 46,
+      "frecuencia": 507,
+      "porcentaje": 12.19
+    },
+    {
+      "numero": 48,
+      "frecuencia": 506,
+      "porcentaje": 12.17
+    },
+    {
+      "numero": 2,
+      "frecuencia": 505,
+      "porcentaje": 12.14
+    },
+    {
+      "numero": 16,
+      "frecuencia": 505,
+      "porcentaje": 12.14
+    },
+    {
+      "numero": 34,
+      "frecuencia": 504,
+      "porcentaje": 12.12
+    },
+    {
+      "numero": 26,
+      "frecuencia": 501,
+      "porcentaje": 12.05
+    },
+    {
+      "numero": 17,
+      "frecuencia": 499,
+      "porcentaje": 12.0
+    },
+    {
+      "numero": 9,
+      "frecuencia": 498,
+      "porcentaje": 11.97
+    },
+    {
+      "numero": 44,
+      "frecuencia": 498,
+      "porcentaje": 11.97
+    },
+    {
+      "numero": 42,
+      "frecuencia": 497,
+      "porcentaje": 11.95
+    },
+    {
+      "numero": 32,
+      "frecuencia": 495,
+      "porcentaje": 11.9
+    },
+    {
+      "numero": 13,
+      "frecuencia": 494,
+      "porcentaje": 11.88
+    },
+    {
+      "numero": 21,
+      "frecuencia": 494,
+      "porcentaje": 11.88
+    },
+    {
+      "numero": 18,
+      "frecuencia": 493,
+      "porcentaje": 11.85
+    },
+    {
+      "numero": 31,
+      "frecuencia": 490,
+      "porcentaje": 11.78
+    },
+    {
+      "numero": 4,
+      "frecuencia": 488,
+      "porcentaje": 11.73
+    },
+    {
+      "numero": 8,
+      "frecuencia": 485,
+      "porcentaje": 11.66
+    },
+    {
+      "numero": 33,
+      "frecuencia": 485,
+      "porcentaje": 11.66
+    },
+    {
+      "numero": 49,
+      "frecuencia": 482,
+      "porcentaje": 11.59
+    },
+    {
+      "numero": 25,
+      "frecuencia": 481,
+      "porcentaje": 11.57
+    },
+    {
+      "numero": 27,
+      "frecuencia": 481,
+      "porcentaje": 11.57
+    },
+    {
+      "numero": 24,
+      "frecuencia": 479,
+      "porcentaje": 11.52
+    },
+    {
+      "numero": 20,
+      "frecuencia": 473,
+      "porcentaje": 11.37
+    }
+  ],
+  "complementarios": [
+    {
+      "numero": 32,
+      "frecuencia": 113,
+      "porcentaje": 2.72
+    },
+    {
+      "numero": 18,
+      "frecuencia": 101,
+      "porcentaje": 2.43
+    },
+    {
+      "numero": 29,
+      "frecuencia": 101,
+      "porcentaje": 2.43
+    },
+    {
+      "numero": 44,
+      "frecuencia": 99,
+      "porcentaje": 2.38
+    },
+    {
+      "numero": 21,
+      "frecuencia": 98,
+      "porcentaje": 2.36
+    },
+    {
+      "numero": 24,
+      "frecuencia": 95,
+      "porcentaje": 2.28
+    },
+    {
+      "numero": 6,
+      "frecuencia": 94,
+      "porcentaje": 2.26
+    },
+    {
+      "numero": 8,
+      "frecuencia": 94,
+      "porcentaje": 2.26
+    },
+    {
+      "numero": 11,
+      "frecuencia": 92,
+      "porcentaje": 2.21
+    },
+    {
+      "numero": 27,
+      "frecuencia": 92,
+      "porcentaje": 2.21
+    }
+  ],
+  "reintegros": [
+    {
+      "reintegro": 0,
+      "frecuencia": 672,
+      "porcentaje": 16.16
+    },
+    {
+      "reintegro": 8,
+      "frecuencia": 423,
+      "porcentaje": 10.17
+    },
+    {
+      "reintegro": 2,
+      "frecuencia": 417,
+      "porcentaje": 10.03
+    },
+    {
+      "reintegro": 5,
+      "frecuencia": 413,
+      "porcentaje": 9.93
+    },
+    {
+      "reintegro": 3,
+      "frecuencia": 385,
+      "porcentaje": 9.26
+    },
+    {
+      "reintegro": 1,
+      "frecuencia": 382,
+      "porcentaje": 9.18
+    },
+    {
+      "reintegro": 9,
+      "frecuencia": 379,
+      "porcentaje": 9.11
+    },
+    {
+      "reintegro": 6,
+      "frecuencia": 367,
+      "porcentaje": 8.82
+    },
+    {
+      "reintegro": 4,
+      "frecuencia": 364,
+      "porcentaje": 8.75
+    },
+    {
+      "reintegro": 7,
+      "frecuencia": 357,
+      "porcentaje": 8.58
+    }
+  ],
+  "top10_mas_frecuentes": [
+    {
+      "numero": 39,
+      "frecuencia": 544,
+      "porcentaje": 13.08
+    },
+    {
+      "numero": 38,
+      "frecuencia": 543,
+      "porcentaje": 13.06
+    },
+    {
+      "numero": 1,
+      "frecuencia": 539,
+      "porcentaje": 12.96
+    },
+    {
+      "numero": 45,
+      "frecuencia": 535,
+      "porcentaje": 12.86
+    },
+    {
+      "numero": 3,
+      "frecuencia": 532,
+      "porcentaje": 12.79
+    },
+    {
+      "numero": 40,
+      "frecuencia": 531,
+      "porcentaje": 12.77
+    },
+    {
+      "numero": 41,
+      "frecuencia": 531,
+      "porcentaje": 12.77
+    },
+    {
+      "numero": 30,
+      "frecuencia": 529,
+      "porcentaje": 12.72
+    },
+    {
+      "numero": 5,
+      "frecuencia": 527,
+      "porcentaje": 12.67
+    },
+    {
+      "numero": 23,
+      "frecuencia": 525,
+      "porcentaje": 12.62
+    }
+  ],
+  "top10_menos_frecuentes": [
+    {
+      "numero": 20,
+      "frecuencia": 473,
+      "porcentaje": 11.37
+    },
+    {
+      "numero": 24,
+      "frecuencia": 479,
+      "porcentaje": 11.52
+    },
+    {
+      "numero": 27,
+      "frecuencia": 481,
+      "porcentaje": 11.57
+    },
+    {
+      "numero": 25,
+      "frecuencia": 481,
+      "porcentaje": 11.57
+    },
+    {
+      "numero": 49,
+      "frecuencia": 482,
+      "porcentaje": 11.59
+    },
+    {
+      "numero": 33,
+      "frecuencia": 485,
+      "porcentaje": 11.66
+    },
+    {
+      "numero": 8,
+      "frecuencia": 485,
+      "porcentaje": 11.66
+    },
+    {
+      "numero": 4,
+      "frecuencia": 488,
+      "porcentaje": 11.73
+    },
+    {
+      "numero": 31,
+      "frecuencia": 490,
+      "porcentaje": 11.78
+    },
+    {
+      "numero": 18,
+      "frecuencia": 493,
+      "porcentaje": 11.85
+    }
+  ]
+}
