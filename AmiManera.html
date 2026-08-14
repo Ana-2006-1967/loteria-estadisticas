@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>A mi manera</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --negro: #080808;
+  --panel: #141414;
+  --panel2: #1C1C1C;
+  --texto: #F0EAD6;
+  /* Gordo */
+  --gordo-c: #C0392B; --gordo-o: #F4D03F; --gordo-d: #922B21;
+  /* Euro */
+  --euro-c: #1565C0; --euro-o: #FFD700; --euro-d: #0D47A1;
+  /* Primitiva */
+  --prim-c: #2E7D32; --prim-o: #F9A825; --prim-d: #1B5E20;
+  /* Perfiles */
+  --hot: #E64A19; --cold: #1976D2; --rand: #6A1B9A;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; }
+body { background:var(--negro); color:var(--texto); font-family:'Rajdhani',sans-serif; }
+
+/* ── SCREENS ── */
+.screen { position:fixed; inset:0; bottom:60px; overflow-y:auto; display:none; padding:16px 16px 20px; }
+.screen.active { display:block; }
+
+/* ── NAV BOTTOM ── */
+nav {
+  position:fixed; bottom:0; left:0; right:0; height:60px;
+  background:#0F0F0F; border-top:1px solid rgba(255,255,255,0.08);
+  display:flex; z-index:100;
+}
+.nav-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; background:none; border:none; color:rgba(240,234,214,0.35);
+  font-family:'Rajdhani',sans-serif; font-size:10px; letter-spacing:1px;
+  text-transform:uppercase; cursor:pointer; transition:all 0.2s;
+}
+.nav-btn.active { color:var(--texto); }
+.nav-btn .nav-icon { font-size:20px; }
+.nav-dot { width:4px; height:4px; border-radius:50%; background:transparent; }
+.nav-btn.active .nav-dot { background:var(--texto); }
+
+/* ── INICIO ── */
+#screen-inicio { padding-top:30px; }
+.app-logo { text-align:center; margin-bottom:32px; }
+.app-logo .icon { font-size:56px; display:block; margin-bottom:8px; }
+.app-logo h1 {
+  font-family:'Bebas Neue',sans-serif; font-size:42px; letter-spacing:8px;
+  background:linear-gradient(135deg,#F4D03F,#FFD700,#F9A825);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.app-logo p { font-size:12px; letter-spacing:3px; color:rgba(240,234,214,0.35); margin-top:4px; }
+
+.lottery-cards { display:flex; flex-direction:column; gap:14px; }
+.lottery-card {
+  border-radius:16px; padding:22px 20px; cursor:pointer;
+  position:relative; overflow:hidden; transition:transform 0.15s;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.lottery-card:active { transform:scale(0.98); }
+.lottery-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.05),transparent);
+}
+.card-gordo { background:linear-gradient(135deg,#1A0A0A,#2C1010); border-color:rgba(192,57,43,0.3); }
+.card-euro  { background:linear-gradient(135deg,#050D1A,#0A1A30); border-color:rgba(21,101,192,0.3); }
+.card-prim  { background:linear-gradient(135deg,#050F05,#0A1E0A); border-color:rgba(46,125,50,0.3); }
+.card-header { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+.card-emoji { font-size:36px; }
+.card-title { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:4px; }
+.card-gordo .card-title { color:var(--gordo-o); }
+.card-euro  .card-title { color:var(--euro-o); }
+.card-prim  .card-title { color:var(--prim-o); }
+.card-sub { font-size:11px; letter-spacing:2px; color:rgba(240,234,214,0.4); text-transform:uppercase; }
+.card-stats-preview { display:flex; gap:16px; }
+.stat-pill { background:rgba(255,255,255,0.06); border-radius:8px; padding:6px 12px; text-align:center; }
+.stat-pill-val { font-family:'Bebas Neue',sans-serif; font-size:20px; display:block; }
+.card-gordo .stat-pill-val { color:var(--gordo-o); }
+.card-euro  .stat-pill-val { color:var(--euro-o); }
+.card-prim  .stat-pill-val { color:var(--prim-o); }
+.stat-pill-lbl { font-size:9px; letter-spacing:2px; color:rgba(240,234,214,0.3); text-transform:uppercase; }
+.card-arrow { position:absolute; right:20px; top:50%; transform:translateY(-50%); font-size:20px; color:rgba(240,234,214,0.2); }
+
+/* ── PANTALLA LOTERÍA ── */
+#screen-loteria { padding-top:0; }
+.loteria-header {
+  position:sticky; top:0; z-index:10;
+  padding:14px 16px 12px;
+  display:flex; align-items:center; gap:12px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.back-btn {
+  background:rgba(255,255,255,0.08); border:none; border-radius:8px;
+  width:36px; height:36px; color:var(--texto); font-size:18px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.loteria-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:4px; }
+
+/* TABS */
+.lot-tabs { display:flex; gap:0; border-bottom:1px solid rgba(255,255,255,0.08); }
+.lot-tab {
+  flex:1; padding:12px; background:none; border:none;
+  color:rgba(240,234,214,0.4); font-family:'Bebas Neue',sans-serif;
+  font-size:14px; letter-spacing:3px; cursor:pointer;
+  border-bottom:2px solid transparent; transition:all 0.2s;
+}
+.lot-tab.active { color:var(--texto); }
+
+.lot-tab-content { display:none; padding:16px 0; }
+.lot-tab-content.active { display:block; }
+
+/* PERFIL */
+.perfil-label { font-size:11px; letter-spacing:3px; color:rgba(240,234,214,0.4); text-transform:uppercase; margin-bottom:10px; }
+.perfil-btns { display:flex; gap:8px; margin-bottom:16px; }
+.perfil-btn {
+  flex:1; padding:12px 6px; border-radius:12px; border:2px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.04); color:rgba(240,234,214,0.5);
+  font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:2px;
+  cursor:pointer; transition:all 0.2s; text-align:center;
+}
+.perfil-btn .perfil-icon { display:block; font-size:22px; margin-bottom:4px; }
+.perfil-btn.active-hot { border-color:var(--hot); color:var(--hot); background:rgba(230,74,25,0.1); }
+.perfil-btn.active-cold { border-color:var(--cold); color:var(--cold); background:rgba(25,118,210,0.1); }
+.perfil-btn.active-rand { border-color:var(--rand); color:var(--rand); background:rgba(106,27,154,0.1); }
+.perfil-desc { font-size:12px; letter-spacing:1px; color:rgba(240,234,214,0.35); margin-bottom:18px; min-height:32px; }
+
+/* CONFIG */
+.config-row { display:flex; align-items:center; justify-content:space-between; background:var(--panel); border-radius:12px; padding:12px 18px; margin-bottom:16px; }
+.config-row label { font-size:12px; letter-spacing:2px; color:rgba(240,234,214,0.5); text-transform:uppercase; }
+.qty-controls { display:flex; align-items:center; gap:12px; }
+.qty-btn { width:32px; height:32px; border:none; border-radius:6px; color:white; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.qty-display { font-family:'Bebas Neue',sans-serif; font-size:24px; min-width:28px; text-align:center; }
+
+/* BTN GENERAR */
+.btn-gen { width:100%; padding:16px; border-radius:12px; border:2px solid; font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:5px; cursor:pointer; transition:all 0.2s; margin-bottom:20px; }
+.btn-gen:active { transform:scale(0.98); }
+
+/* APUESTAS */
+.apuestas-list { display:flex; flex-direction:column; gap:12px; }
+.apuesta-card { border-radius:14px; padding:16px; border:1px solid rgba(255,255,255,0.08); animation:fadeUp 0.3s ease forwards; opacity:0; transform:translateY(8px); }
+@keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+.ap-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.ap-num { font-size:11px; letter-spacing:2px; color:rgba(240,234,214,0.3); }
+.ap-perfil { font-size:10px; letter-spacing:1px; padding:3px 8px; border-radius:20px; }
+.perfil-tag-hot { background:rgba(230,74,25,0.2); color:var(--hot); }
+.perfil-tag-cold { background:rgba(25,118,210,0.2); color:var(--cold); }
+.perfil-tag-rand { background:rgba(106,27,154,0.2); color:#AB47BC; }
+.bolas-row { display:flex; gap:6px; flex-wrap:wrap; align-items:flex-end; }
+.bola-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.bola {
+  width:40px; height:40px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Bebas Neue',sans-serif; font-size:16px; flex-shrink:0;
+}
+.bola-lbl { font-size:8px; letter-spacing:1px; color:rgba(240,234,214,0.3); text-transform:uppercase; }
+.sep { color:rgba(240,234,214,0.15); font-size:16px; align-self:center; padding:0 2px; margin-bottom:12px; }
+
+/* Colores bolas por lotería */
+.b-gordo-n { background:radial-gradient(circle at 35% 35%,#fff 0%,#C0392B 40%,#922B21 100%);color:white;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-gordo-c { background:radial-gradient(circle at 35% 35%,#fff9c4 0%,#F4D03F 40%,#D4AC0D 100%);color:#080808;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-gordo-r { background:radial-gradient(circle at 35% 35%,#e8f5e9 0%,#43A047 40%,#2E7D32 100%);color:white;font-size:13px;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-euro-n  { background:radial-gradient(circle at 35% 35%,#5577FF 0%,#1565C0 50%,#0D47A1 100%);color:white;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-euro-e  { background:radial-gradient(circle at 35% 35%,#FFF8E1 0%,#FFD700 40%,#FF8F00 100%);color:#080808;font-size:13px;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-prim-n  { background:radial-gradient(circle at 35% 35%,#C8E6C9 0%,#43A047 40%,#2E7D32 100%);color:white;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-prim-c  { background:radial-gradient(circle at 35% 35%,#ffcdd2 0%,#E53935 40%,#B71C1C 100%);color:white;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+.b-prim-r  { background:radial-gradient(circle at 35% 35%,#e3f2fd 0%,#1565C0 40%,#0D47A1 100%);color:white;font-size:13px;box-shadow:0 3px 8px rgba(0,0,0,0.5); }
+
+/* ESTADÍSTICAS */
+.stats-meta { display:flex; justify-content:space-around; background:var(--panel); border-radius:12px; padding:14px; margin-bottom:18px; }
+.meta-item { text-align:center; }
+.meta-val { font-family:'Bebas Neue',sans-serif; font-size:22px; display:block; }
+.meta-lbl { font-size:9px; letter-spacing:2px; color:rgba(240,234,214,0.35); text-transform:uppercase; }
+.stats-title { font-size:11px; letter-spacing:3px; color:rgba(240,234,214,0.4); text-transform:uppercase; margin:18px 0 10px; display:flex; align-items:center; gap:8px; }
+.stats-title::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.06); }
+.bar-row { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+.bar-bola { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:13px; flex-shrink:0; }
+.bar-track { flex:1; background:rgba(255,255,255,0.06); border-radius:4px; height:20px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; display:flex; align-items:center; padding-left:6px; }
+.bar-count { font-family:'Bebas Neue',sans-serif; font-size:12px; color:rgba(240,234,214,0.9); white-space:nowrap; }
+.bar-pct { font-size:10px; color:rgba(240,234,214,0.4); min-width:38px; text-align:right; }
+
+.loading-box { text-align:center; padding:40px 20px; color:rgba(240,234,214,0.3); font-size:12px; letter-spacing:2px; }
+.spin { display:block; font-size:32px; margin-bottom:10px; animation:spin 1.5s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+
+.empty-gen { text-align:center; padding:30px; color:rgba(240,234,214,0.2); font-size:12px; letter-spacing:2px; }
+
+/* Color accents por lotería */
+.gordo-accent .lot-tab.active { border-bottom-color:var(--gordo-o); color:var(--gordo-o); }
+.gordo-accent .lot-title { color:var(--gordo-o); }
+.gordo-accent .qty-btn { background:var(--gordo-c); }
+.gordo-accent .qty-display { color:var(--gordo-o); }
+.gordo-accent .btn-gen { background:linear-gradient(135deg,var(--gordo-c),var(--gordo-d)); border-color:var(--gordo-o); color:var(--gordo-o); }
+.gordo-accent .meta-val { color:var(--gordo-o); }
+.gordo-accent .loteria-header { background:linear-gradient(180deg,rgba(192,57,43,0.15),transparent); }
+
+.euro-accent .lot-tab.active { border-bottom-color:var(--euro-o); color:var(--euro-o); }
+.euro-accent .lot-title { color:var(--euro-o); }
+.euro-accent .qty-btn { background:var(--euro-c); }
+.euro-accent .qty-display { color:var(--euro-o); }
+.euro-accent .btn-gen { background:linear-gradient(135deg,var(--euro-c),var(--euro-d)); border-color:var(--euro-o); color:var(--euro-o); }
+.euro-accent .meta-val { color:var(--euro-o); }
+.euro-accent .loteria-header { background:linear-gradient(180deg,rgba(21,101,192,0.15),transparent); }
+
+.prim-accent .lot-tab.active { border-bottom-color:var(--prim-o); color:var(--prim-o); }
+.prim-accent .lot-title { color:var(--prim-o); }
+.prim-accent .qty-btn { background:var(--prim-c); }
+.prim-accent .qty-display { color:var(--prim-o); }
+.prim-accent .btn-gen { background:linear-gradient(135deg,var(--prim-c),var(--prim-d)); border-color:var(--prim-o); color:var(--prim-o); }
+.prim-accent .meta-val { color:var(--prim-o); }
+.prim-accent .loteria-header { background:linear-gradient(180deg,rgba(46,125,50,0.15),transparent); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PANTALLA INICIO
+═══════════════════════════════════════════ -->
+<div class="screen active" id="screen-inicio">
+  <div class="app-logo">
+    <span class="icon">🍀</span>
+    <h1>A MI MANERA</h1>
+    <p>Generador inteligente de apuestas</p>
+  </div>
+  <div class="lottery-cards">
+    <div class="lottery-card card-gordo" onclick="abrirLoteria('gordo')">
+      <div class="card-header">
+        <span class="card-emoji">🍀</span>
+        <div>
+          <div class="card-title">El Gordo</div>
+          <div class="card-sub">5 números + clave · Domingos</div>
+        </div>
+      </div>
+      <div class="card-stats-preview" id="preview-gordo">
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Sorteos</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Más frecuente</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Actualizado</span></div>
+      </div>
+      <span class="card-arrow">›</span>
+    </div>
+    <div class="lottery-card card-euro" onclick="abrirLoteria('euro')">
+      <div class="card-header">
+        <span class="card-emoji">⭐</span>
+        <div>
+          <div class="card-title">Euromillones</div>
+          <div class="card-sub">5 números + 2 estrellas · Mar y Vie</div>
+        </div>
+      </div>
+      <div class="card-stats-preview" id="preview-euro">
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Sorteos</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Más frecuente</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Actualizado</span></div>
+      </div>
+      <span class="card-arrow">›</span>
+    </div>
+    <div class="lottery-card card-prim" onclick="abrirLoteria('prim')">
+      <div class="card-header">
+        <span class="card-emoji">🎯</span>
+        <div>
+          <div class="card-title">La Primitiva</div>
+          <div class="card-sub">6 números + comp · Jue y Sáb · Desde 1985</div>
+        </div>
+      </div>
+      <div class="card-stats-preview" id="preview-prim">
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Sorteos</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Más frecuente</span></div>
+        <div class="stat-pill"><span class="stat-pill-val">—</span><span class="stat-pill-lbl">Actualizado</span></div>
+      </div>
+      <span class="card-arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANTALLA LOTERÍA
+═══════════════════════════════════════════ -->
+<div class="screen" id="screen-loteria">
+  <div class="loteria-header" id="lot-header">
+    <button class="back-btn" onclick="volverInicio()">‹</button>
+    <span class="loteria-title lot-title" id="lot-title">—</span>
+  </div>
+  <div class="lot-tabs">
+    <button class="lot-tab active" onclick="switchLotTab('generar',this)">🎰 Generar</button>
+    <button class="lot-tab" onclick="switchLotTab('stats',this)">📊 Estadísticas</button>
+  </div>
+
+  <!-- GENERAR -->
+  <div class="lot-tab-content active" id="lot-tab-generar">
+    <!-- Perfil -->
+    <div class="perfil-label">Estrategia de generación</div>
+    <div class="perfil-btns">
+      <button class="perfil-btn" id="pbtn-hot" onclick="setPerfil('hot')">
+        <span class="perfil-icon">🔥</span>Calientes
+      </button>
+      <button class="perfil-btn active-rand" id="pbtn-rand" onclick="setPerfil('rand')">
+        <span class="perfil-icon">🎲</span>Aleatorio
+      </button>
+      <button class="perfil-btn" id="pbtn-cold" onclick="setPerfil('cold')">
+        <span class="perfil-icon">❄️</span>Fríos
+      </button>
+    </div>
+    <div class="perfil-desc" id="perfil-desc">Todos los números con igual probabilidad.</div>
+
+    <!-- Cantidad -->
+    <div class="config-row">
+      <label>Apuestas</label>
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="cambiarQty(-1)">−</button>
+        <span class="qty-display" id="qty-display">1</span>
+        <button class="qty-btn" onclick="cambiarQty(1)">+</button>
+      </div>
+    </div>
+
+    <!-- Generar -->
+    <button class="btn-gen" id="btn-gen" onclick="generar()">✦ GENERAR APUESTA ✦</button>
+
+    <!-- Resultados -->
+    <div class="apuestas-list" id="apuestas-list">
+      <div class="empty-gen">Elige tu estrategia y pulsa GENERAR</div>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div class="lot-tab-content" id="lot-tab-stats">
+    <div id="stats-area">
+      <div class="loading-box"><span class="spin">⚙️</span>Cargando estadísticas...</div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" id="nav-inicio" onclick="irA('inicio')">
+    <span class="nav-icon">🏠</span><span>Inicio</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" id="nav-gordo" onclick="abrirLoteria('gordo')">
+    <span class="nav-icon">🍀</span><span>Gordo</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" id="nav-euro" onclick="abrirLoteria('euro')">
+    <span class="nav-icon">⭐</span><span>Euro</span><div class="nav-dot"></div>
+  </button>
+  <button class="nav-btn" id="nav-prim" onclick="abrirLoteria('prim')">
+    <span class="nav-icon">🎯</span><span>Primitiva</span><div class="nav-dot"></div>
+  </button>
+</nav>
+
+<script>
+// ── CONFIGURACIÓN ──────────────────────────────────────────────────────────────
+const BASE = 'https://loteria-estadisticas.netlify.app';
+const CONFIGS = {
+  gordo: {
+    title: 'El Gordo',
+    url: BASE+'/estadisticas_gordo.json',
+    accent: 'gordo-accent',
+    generar: generarGordo,
+    renderStats: renderStatsGordo,
+    bolas: renderBolasGordo
+  },
+  euro: {
+    title: 'Euromillones',
+    url: BASE+'/estadisticas_euro.json',
+    accent: 'euro-accent',
+    generar: generarEuro,
+    renderStats: renderStatsEuro,
+    bolas: renderBolasEuro
+  },
+  prim: {
+    title: 'La Primitiva',
+    url: BASE+'/estadisticas_primitiva.json',
+    accent: 'prim-accent',
+    generar: generarPrim,
+    renderStats: renderStatsPrim,
+    bolas: renderBolasPrim
+  }
+};
+
+let currentLot = null;
+let currentPerfil = 'rand';
+let qty = 1;
+let statsData = {};  // caché de datos por lotería
+
+const PERFIL_DESC = {
+  hot:  'Genera usando los 15 números más frecuentes del histórico.',
+  cold: 'Genera usando los 15 números menos frecuentes del histórico.',
+  rand: 'Todos los números con igual probabilidad.'
+};
+
+// ── NAVEGACIÓN ─────────────────────────────────────────────────────────────────
+function irA(nombre) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-'+nombre).classList.add('active');
+  document.getElementById('nav-'+nombre).classList.add('active');
+}
+
+function volverInicio() { irA('inicio'); }
+
+function abrirLoteria(lot) {
+  currentLot = lot;
+  const cfg = CONFIGS[lot];
+
+  // Actualizar header
+  document.getElementById('lot-title').textContent = cfg.title;
+  const header = document.getElementById('lot-header');
+  header.className = 'loteria-header ' + cfg.accent;
+
+  // Actualizar accent
+  const loteria = document.getElementById('screen-loteria');
+  loteria.className = 'screen ' + cfg.accent;
+
+  // Reset tabs
+  document.querySelectorAll('.lot-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lot-tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lot-tab')[0].classList.add('active');
+  document.getElementById('lot-tab-generar').classList.add('active');
+
+  // Reset generador
+  resetPerfil();
+  qty = 1;
+  document.getElementById('qty-display').textContent = 1;
+  document.getElementById('apuestas-list').innerHTML = '<div class="empty-gen">Elige tu estrategia y pulsa GENERAR</div>';
+
+  // Cargar stats si no están en caché
+  if (!statsData[lot]) cargarStats(lot);
+  else renderStatsEnArea(lot);
+
+  // Nav
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nav-'+lot).classList.add('active');
+
+  irA('loteria');
+}
+
+function switchLotTab(name, btn) {
+  document.querySelectorAll('.lot-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lot-tab-content').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('lot-tab-'+name).classList.add('active');
+}
+
+// ── PERFIL ─────────────────────────────────────────────────────────────────────
+function setPerfil(p) {
+  currentPerfil = p;
+  ['hot','rand','cold'].forEach(x => {
+    const btn = document.getElementById('pbtn-'+x);
+    btn.className = 'perfil-btn' + (x===p ? ' active-'+x : '');
+  });
+  document.getElementById('perfil-desc').textContent = PERFIL_DESC[p];
+}
+function resetPerfil() { setPerfil('rand'); }
+
+// ── CANTIDAD ───────────────────────────────────────────────────────────────────
+function cambiarQty(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+  document.getElementById('qty-display').textContent = qty;
+}
+
+// ── RANDOM ────────────────────────────────────────────────────────────────────
+function rand(min, max) {
+  const a = new Uint32Array(1); crypto.getRandomValues(a);
+  return min + (a[0] % (max - min + 1));
+}
+function randFrom(arr) { return arr[rand(0, arr.length-1)]; }
+function sample(arr, n) {
+  const pool = [...arr]; const out = [];
+  while (out.length < n) {
+    const i = rand(0, pool.length-1);
+    out.push(pool.splice(i,1)[0]);
+  }
+  return out.sort((a,b)=>a-b);
+}
+function pad(n) { return String(n).padStart(2,'0'); }
+
+// ── POOLS POR PERFIL ──────────────────────────────────────────────────────────
+function getPool(lot, campo, min, max, n) {
+  const data = statsData[lot];
+  if (!data || currentPerfil === 'rand') {
+    const all = Array.from({length: max-min+1}, (_,i)=>i+min);
+    return all;
+  }
+  const arr = data[campo] || data.numeros || [];
+  if (currentPerfil === 'hot') return arr.slice(0,15).map(x=>x.numero||x.estrella||x.clave||x.reintegro);
+  if (currentPerfil === 'cold') return arr.slice(-15).map(x=>x.numero||x.estrella||x.clave||x.reintegro);
+  return Array.from({length: max-min+1}, (_,i)=>i+min);
+}
+
+// ── GENERADORES ───────────────────────────────────────────────────────────────
+function generarGordo() {
+  const pool = getPool('gordo','numeros',1,54,54);
+  const nums = sample(pool,5);
+  const clavePool = getPool('gordo','claves',0,9,10);
+  const clave = randFrom(clavePool);
+  return {nums, clave};
+}
+function generarEuro() {
+  const pool = getPool('euro','numeros',1,50,50);
+  const nums = sample(pool,5);
+  const estPool = getPool('euro','estrellas',1,12,12);
+  const ests = sample(estPool.filter(x=>x>=1&&x<=12),2);
+  return {nums, ests};
+}
+function generarPrim() {
+  const pool = getPool('prim','numeros',1,49,49);
+  const nums = sample(pool,6);
+  const compPool = Array.from({length:49},(_,i)=>i+1);
+  const comp = randFrom(compPool);
+  const rein = rand(0,9);
+  return {nums, comp, rein};
+}
+
+// ── RENDER BOLAS ──────────────────────────────────────────────────────────────
+function renderBolasGordo(ap) {
+  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-gordo-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
+    +'<span class="sep">|</span>'
+    +`<div class="bola-wrap"><div class="bola b-gordo-c">${pad(ap.clave)}</div><div class="bola-lbl">Clave</div></div>`;
+}
+function renderBolasEuro(ap) {
+  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-euro-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
+    +'<span class="sep">|</span>'
+    +ap.ests.map(e=>`<div class="bola-wrap"><div class="bola b-euro-e">★${pad(e)}</div><div class="bola-lbl">★</div></div>`).join('');
+}
+function renderBolasPrim(ap) {
+  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-prim-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
+    +'<span class="sep">|</span>'
+    +`<div class="bola-wrap"><div class="bola b-prim-c">${pad(ap.comp)}</div><div class="bola-lbl">Comp</div></div>`
+    +'<span class="sep">·</span>'
+    +`<div class="bola-wrap"><div class="bola b-prim-r">${ap.rein}</div><div class="bola-lbl">R</div></div>`;
+}
+
+// ── GENERAR ───────────────────────────────────────────────────────────────────
+function generar() {
+  const cfg = CONFIGS[currentLot];
+  const list = document.getElementById('apuestas-list');
+  list.innerHTML = '';
+  const perfilLabels = {hot:'🔥 Calientes', cold:'❄️ Fríos', rand:'🎲 Aleatorio'};
+  const perfilTag = {hot:'perfil-tag-hot', cold:'perfil-tag-cold', rand:'perfil-tag-rand'};
+
+  for(let i=0; i<qty; i++) {
+    const ap = cfg.generar();
+    const card = document.createElement('div');
+    card.className = 'apuesta-card';
+    card.style.background = 'var(--panel)';
+    card.style.animationDelay = `${i*0.07}s`;
+    card.innerHTML = `
+      <div class="ap-header">
+        <span class="ap-num">Apuesta ${i+1}</span>
+        <span class="ap-perfil ${perfilTag[currentPerfil]}">${perfilLabels[currentPerfil]}</span>
+      </div>
+      <div class="bolas-row">${cfg.bolas(ap)}</div>`;
+    list.appendChild(card);
+  }
+}
+
+// ── ESTADÍSTICAS ──────────────────────────────────────────────────────────────
+async function cargarStats(lot) {
+  document.getElementById('stats-area').innerHTML = '<div class="loading-box"><span class="spin">⚙️</span>Cargando estadísticas...</div>';
+  try {
+    const resp = await fetch(CONFIGS[lot].url+'?t='+Date.now());
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    statsData[lot] = await resp.json();
+    renderStatsEnArea(lot);
+    actualizarPreview(lot);
+  } catch(e) {
+    document.getElementById('stats-area').innerHTML = '<div class="loading-box">⚠️ No se pudieron cargar las estadísticas.</div>';
+  }
+}
+
+function renderStatsEnArea(lot) {
+  if (currentLot !== lot) return;
+  CONFIGS[lot].renderStats(statsData[lot]);
+}
+
+function actualizarPreview(lot) {
+  const data = statsData[lot];
+  if (!data) return;
+  const top = (data.top10_mas_frecuentes||[])[0];
+  const pills = document.querySelectorAll(`#preview-${lot} .stat-pill-val`);
+  if (pills[0]) pills[0].textContent = data.total_sorteos;
+  if (pills[1] && top) pills[1].textContent = pad(top.numero);
+  if (pills[2]) pills[2].textContent = data.ultima_actualizacion?.split(' ')[0]||'—';
+}
+
+function barRow(bola_class, label, freq, maxFreq, pct, fill_class) {
+  return `<div class="bar-row">
+    <div class="bar-bola ${bola_class}">${label}</div>
+    <div class="bar-track"><div class="bar-fill ${fill_class}" style="width:${Math.max(8,(freq/maxFreq*100)).toFixed(1)}%"><span class="bar-count">${freq}×</span></div></div>
+    <span class="bar-pct">${pct}%</span>
+  </div>`;
+}
+
+function renderStatsGordo(data) {
+  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  let html = `<div class="stats-meta">
+    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">${data.fecha_ultimo_sorteo}</span><span class="meta-lbl">Último</span></div>
+    <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
+  </div>
+  <div class="stats-title">🔥 Más frecuentes</div>`;
+  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-gordo-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill'); });
+  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
+  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-gordo-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill'); });
+  html+=`<div class="stats-title">⭐ Claves</div>`;
+  const maxC=data.claves[0].frecuencia;
+  data.claves.forEach(x=>{ html+=barRow('b-gordo-c',x.clave,x.frecuencia,maxC,x.porcentaje,'bar-fill'); });
+  document.getElementById('stats-area').innerHTML = html;
+  // Colores barras
+  document.querySelectorAll('#stats-area .bar-fill').forEach(b=>b.style.background='linear-gradient(90deg,#922B21,#C0392B)');
+}
+
+function renderStatsEuro(data) {
+  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  let html = `<div class="stats-meta">
+    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">${data.fecha_ultimo_sorteo}</span><span class="meta-lbl">Último</span></div>
+    <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
+  </div>
+  <div class="stats-title">🔥 Más frecuentes</div>`;
+  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-euro-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-euro'); });
+  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
+  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-euro-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-euro'); });
+  html+=`<div class="stats-title">★ Estrellas</div>`;
+  const maxS=data.top5_estrellas[0].frecuencia;
+  data.top5_estrellas.forEach(x=>{ html+=barRow('b-euro-e','★'+pad(x.estrella),x.frecuencia,maxS,x.porcentaje,'bar-fill-euro-s'); });
+  document.getElementById('stats-area').innerHTML = html;
+  document.querySelectorAll('#stats-area .bar-fill-euro').forEach(b=>b.style.background='linear-gradient(90deg,#0D47A1,#1565C0)');
+  document.querySelectorAll('#stats-area .bar-fill-euro-s').forEach(b=>b.style.background='linear-gradient(90deg,#FF8F00,#FFD700)');
+}
+
+function renderStatsPrim(data) {
+  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  let html = `<div class="stats-meta">
+    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">1985</span><span class="meta-lbl">Desde</span></div>
+    <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
+  </div>
+  <div class="stats-title">🔥 Más frecuentes</div>`;
+  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-prim-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-prim'); });
+  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
+  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-prim-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-prim'); });
+  html+=`<div class="stats-title">🔴 Complementario</div>`;
+  const maxC=data.complementarios[0].frecuencia;
+  data.complementarios.forEach(x=>{ html+=barRow('b-prim-c',pad(x.numero),x.frecuencia,maxC,x.porcentaje,'bar-fill-comp'); });
+  document.getElementById('stats-area').innerHTML = html;
+  document.querySelectorAll('#stats-area .bar-fill-prim').forEach(b=>b.style.background='linear-gradient(90deg,#1B5E20,#43A047)');
+  document.querySelectorAll('#stats-area .bar-fill-comp').forEach(b=>b.style.background='linear-gradient(90deg,#B71C1C,#E53935)');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+// Precargar stats de las tres loterías al arrancar
+window.addEventListener('load', ()=>{
+  ['gordo','euro','prim'].forEach(lot=>{
+    fetch(CONFIGS[lot].url+'?t='+Date.now())
+      .then(r=>r.json())
+      .then(data=>{ statsData[lot]=data; actualizarPreview(lot); })
+      .catch(()=>{});
+  });
+});
+</script>
+</body>
+</html>
