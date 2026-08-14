@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Gordo de la Primitiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rojo: #C0392B;
+    --rojo-oscuro: #922B21;
+    --oro: #F4D03F;
+    --oro-oscuro: #D4AC0D;
+    --negro: #0A0A0A;
+    --gris-oscuro: #1A1A1A;
+    --gris: #2C2C2C;
+    --blanco: #F0EAD6;
+    --verde: #27AE60;
+    --azul: #2980B9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(192,57,43,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(244,208,63,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 32px 20px 20px;
+    border-bottom: 2px solid rgba(244,208,63,0.3);
+    background: linear-gradient(180deg, rgba(192,57,43,0.2) 0%, transparent 100%);
+  }
+  .logo-icon { font-size: 48px; display: block; margin-bottom: 6px; }
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(32px, 8vw, 60px);
+    letter-spacing: 6px;
+    color: var(--oro);
+    text-shadow: 0 0 30px rgba(244,208,63,0.4), 2px 2px 0 var(--rojo-oscuro);
+    line-height: 1;
+  }
+  header p {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: rgba(240,234,214,0.5);
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* TABS */
+  .tabs {
+    position: relative; z-index: 1;
+    display: flex;
+    max-width: 540px;
+    margin: 20px auto 0;
+    padding: 0 16px;
+    gap: 8px;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px;
+    background: var(--gris);
+    border: 1px solid rgba(244,208,63,0.15);
+    border-radius: 10px 10px 0 0;
+    color: rgba(240,234,214,0.5);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: var(--gris-oscuro);
+    border-color: var(--oro);
+    color: var(--oro);
+    border-bottom-color: var(--gris-oscuro);
+  }
+
+  main {
+    position: relative; z-index: 1;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+    background: var(--gris-oscuro);
+    border: 1px solid rgba(244,208,63,0.15);
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+  }
+
+  /* TAB CONTENT */
+  .tab-content { display: none; padding-top: 20px; }
+  .tab-content.active { display: block; }
+
+  /* ── PESTAÑA GENERAR ── */
+  .config-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--gris);
+    border: 1px solid rgba(244,208,63,0.2);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 16px;
+  }
+  .config-panel label {
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(240,234,214,0.6);
+    text-transform: uppercase;
+  }
+  .qty-controls { display: flex; align-items: center; gap: 14px; }
+  .qty-btn {
+    width: 34px; height: 34px;
+    background: var(--rojo);
+    border: none; border-radius: 6px;
+    color: white; font-size: 20px; font-weight: 700;
+    cursor: pointer; transition: background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-btn:hover { background: var(--rojo-oscuro); }
+  .qty-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; color: var(--oro);
+    min-width: 32px; text-align: center;
+  }
+  .reintegro-wrap {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--gris);
+    border: 1px solid rgba(244,208,63,0.2);
+    border-radius: 12px;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .reintegro-wrap input[type=checkbox] { display: none; }
+  .toggle {
+    width: 42px; height: 24px;
+    background: var(--gris-oscuro);
+    border-radius: 12px; position: relative;
+    transition: background 0.2s; flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .toggle::after {
+    content: ''; width: 18px; height: 18px;
+    background: #888; border-radius: 50%;
+    position: absolute; top: 2px; left: 2px; transition: all 0.2s;
+  }
+  .reintegro-wrap input:checked ~ .toggle { background: var(--verde); }
+  .reintegro-wrap input:checked ~ .toggle::after { left: 21px; background: white; }
+  .reintegro-label {
+    font-size: 13px; letter-spacing: 2px;
+    color: rgba(240,234,214,0.6);
+    text-transform: uppercase; flex: 1;
+  }
+  .reintegro-note { font-size: 11px; color: var(--oro); letter-spacing: 1px; }
+  .btn-generar {
+    width: 100%; padding: 18px;
+    background: linear-gradient(135deg, var(--rojo) 0%, var(--rojo-oscuro) 100%);
+    border: 2px solid var(--oro); border-radius: 12px;
+    color: var(--oro);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 5px;
+    cursor: pointer; transition: all 0.2s;
+    margin-bottom: 28px; position: relative; overflow: hidden;
+  }
+  .btn-generar:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(192,57,43,0.4); }
+  #apuestas-container { display: flex; flex-direction: column; gap: 14px; }
+  .apuesta-card {
+    background: var(--negro);
+    border: 1px solid rgba(244,208,63,0.15);
+    border-radius: 14px; padding: 18px;
+    animation: slideIn 0.35s ease forwards;
+    opacity: 0; transform: translateY(10px);
+  }
+  @keyframes slideIn { to { opacity: 1; transform: translateY(0); } }
+  .apuesta-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 14px;
+  }
+  .apuesta-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px; letter-spacing: 3px;
+    color: rgba(240,234,214,0.35);
+  }
+  .apuesta-tipo { font-size: 11px; letter-spacing: 2px; color: var(--oro); text-transform: uppercase; }
+  .bolas-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .bola {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 19px;
+    flex-shrink: 0; transition: transform 0.15s;
+  }
+  .bola:hover { transform: scale(1.08); }
+  .bola-normal {
+    background: radial-gradient(circle at 35% 35%, #fff 0%, var(--rojo) 40%, var(--rojo-oscuro) 100%);
+    color: white; box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+  }
+  .bola-clave {
+    background: radial-gradient(circle at 35% 35%, #fff9c4 0%, var(--oro) 40%, var(--oro-oscuro) 100%);
+    color: var(--negro); box-shadow: 0 3px 10px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.5);
+  }
+  .bola-reintegro {
+    background: radial-gradient(circle at 35% 35%, #e8f5e9 0%, #4CAF50 40%, #2E7D32 100%);
+    color: white; box-shadow: 0 3px 10px rgba(0,0,0,0.5); font-size: 15px;
+  }
+  .separador { color: rgba(240,234,214,0.2); font-size: 20px; padding: 0 2px; }
+  .bola-label { font-size: 9px; letter-spacing: 1px; color: rgba(240,234,214,0.3); text-align: center; margin-top: 4px; text-transform: uppercase; }
+  .bola-wrap { display: flex; flex-direction: column; align-items: center; }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 4px;
+    color: rgba(240,234,214,0.4); text-transform: uppercase;
+    margin: 32px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(244,208,63,0.15); }
+  #historial-container { display: flex; flex-direction: column; gap: 10px; }
+  .hist-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 12px 16px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .hist-meta { font-size: 11px; letter-spacing: 2px; color: rgba(240,234,214,0.3); }
+  .hist-bolas { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .hist-bola {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 14px;
+  }
+  .hist-bola-n { background: var(--rojo); color: white; }
+  .hist-bola-c { background: var(--oro); color: var(--negro); }
+  .hist-bola-r { background: #27AE60; color: white; font-size: 11px; }
+  .btn-limpiar {
+    margin-top: 20px; width: 100%; padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+    color: rgba(240,234,214,0.4);
+    font-family: 'Rajdhani', sans-serif; font-size: 13px;
+    letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-limpiar:hover { border-color: var(--rojo); color: var(--rojo); }
+  .empty-state {
+    text-align: center; padding: 40px 20px;
+    color: rgba(240,234,214,0.2); font-size: 13px; letter-spacing: 2px;
+  }
+  .empty-state .icon { font-size: 40px; display: block; margin-bottom: 10px; }
+
+  /* ── PESTAÑA ESTADÍSTICAS ── */
+  .stats-meta {
+    background: var(--gris);
+    border: 1px solid rgba(244,208,63,0.15);
+    border-radius: 10px; padding: 14px 18px;
+    margin-bottom: 20px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+  }
+  .meta-item { text-align: center; }
+  .meta-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; color: var(--oro); display: block;
+  }
+  .meta-lbl { font-size: 10px; letter-spacing: 2px; color: rgba(240,234,214,0.4); text-transform: uppercase; }
+
+  .stats-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px; letter-spacing: 3px;
+    color: rgba(240,234,214,0.5); text-transform: uppercase;
+    margin: 24px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .stats-section-title::after { content: ''; flex: 1; height: 1px; background: rgba(244,208,63,0.1); }
+
+  .bar-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px;
+  }
+  .bar-bola {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 15px;
+    flex-shrink: 0;
+  }
+  .bar-bola-hot {
+    background: radial-gradient(circle at 35% 35%, #fff 0%, var(--rojo) 40%, var(--rojo-oscuro) 100%);
+    color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .bar-bola-cold {
+    background: radial-gradient(circle at 35% 35%, #e3f2fd 0%, #2196F3 40%, #0D47A1 100%);
+    color: white; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .bar-bola-clave {
+    background: radial-gradient(circle at 35% 35%, #fff9c4 0%, var(--oro) 40%, var(--oro-oscuro) 100%);
+    color: var(--negro); box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .bar-track {
+    flex: 1; background: rgba(255,255,255,0.06);
+    border-radius: 4px; height: 22px; overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 4px;
+    transition: width 0.8s ease;
+    display: flex; align-items: center; padding-left: 8px;
+  }
+  .bar-fill-hot { background: linear-gradient(90deg, var(--rojo-oscuro), var(--rojo)); }
+  .bar-fill-cold { background: linear-gradient(90deg, #0D47A1, #2196F3); }
+  .bar-fill-clave { background: linear-gradient(90deg, var(--oro-oscuro), var(--oro)); }
+  .bar-count {
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px;
+    color: rgba(240,234,214,0.9); white-space: nowrap;
+  }
+  .bar-pct {
+    font-size: 11px; letter-spacing: 1px;
+    color: rgba(240,234,214,0.4); min-width: 42px; text-align: right;
+  }
+
+  .loading-stats {
+    text-align: center; padding: 50px 20px;
+    color: rgba(240,234,214,0.3); font-size: 13px; letter-spacing: 2px;
+  }
+  .loading-icon { font-size: 36px; display: block; margin-bottom: 10px; animation: spin 1.5s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-stats {
+    text-align: center; padding: 40px 20px;
+    color: rgba(192,57,43,0.7); font-size: 13px; letter-spacing: 2px;
+  }
+
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 20px;
+    font-size: 11px; letter-spacing: 2px;
+    color: rgba(240,234,214,0.2);
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo-icon">🍀</span>
+  <h1>El Gordo de la Primitiva</h1>
+  <p>Generador de apuestas · Estadísticas históricas</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('generar')">🎰 Generar</button>
+  <button class="tab-btn" onclick="switchTab('estadisticas')">📊 Estadísticas</button>
+</div>
+
+<main>
+
+  <!-- ═══ PESTAÑA GENERAR ═══ -->
+  <div class="tab-content active" id="tab-generar">
+
+    <div class="config-panel">
+      <label>Número de apuestas</label>
+      <div class="qty-controls">
+        <button class="qty-btn" id="btn-menos">−</button>
+        <span class="qty-display" id="qty-val">1</span>
+        <button class="qty-btn" id="btn-mas">+</button>
+      </div>
+    </div>
+
+    <label class="reintegro-wrap">
+      <input type="checkbox" id="chk-reintegro">
+      <div class="toggle"></div>
+      <span class="reintegro-label">Incluir Reintegro</span>
+      <span class="reintegro-note">+1 número (0–9)</span>
+    </label>
+
+    <button class="btn-generar" id="btn-generar">✦ GENERAR APUESTA ✦</button>
+
+    <div id="apuestas-container">
+      <div class="empty-state">
+        <span class="icon">🎰</span>
+        Pulsa GENERAR para crear tu apuesta
+      </div>
+    </div>
+
+    <div id="historial-section" style="display:none">
+      <div class="section-title">Historial</div>
+      <div id="historial-container"></div>
+      <button class="btn-limpiar" id="btn-limpiar">✕ Limpiar historial</button>
+    </div>
+
+  </div>
+
+  <!-- ═══ PESTAÑA ESTADÍSTICAS ═══ -->
+  <div class="tab-content" id="tab-estadisticas">
+
+    <div id="stats-loading" class="loading-stats">
+      <span class="loading-icon">⚙️</span>
+      Cargando estadísticas históricas...
+    </div>
+
+    <div id="stats-error" class="error-stats" style="display:none">
+      <span style="font-size:36px;display:block;margin-bottom:10px">⚠️</span>
+      No se pudieron cargar las estadísticas.<br>
+      <span style="font-size:11px;color:rgba(240,234,214,0.3)">Comprueba tu conexión e inténtalo de nuevo.</span>
+    </div>
+
+    <div id="stats-content" style="display:none">
+
+      <!-- Metadatos -->
+      <div class="stats-meta" id="stats-meta"></div>
+
+      <!-- Top 10 más frecuentes -->
+      <div class="stats-section-title">🔥 Más frecuentes</div>
+      <div id="bars-hot"></div>
+
+      <!-- Top 10 menos frecuentes -->
+      <div class="stats-section-title">❄️ Menos frecuentes</div>
+      <div id="bars-cold"></div>
+
+      <!-- Claves -->
+      <div class="stats-section-title">⭐ Claves (0–9)</div>
+      <div id="bars-clave"></div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<footer>El Gordo de la Primitiva · Solo para uso lúdico · No implica ganancia garantizada</footer>
+
+<script>
+const STATS_URL = 'https://loteria-estadisticas.netlify.app/estadisticas_gordo.json';
+const MAX_QTY = 10;
+let qty = 1;
+let historial = JSON.parse(localStorage.getItem('gordo_hist') || '[]');
+let statsLoaded = false;
+
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'estadisticas' && !statsLoaded) loadStats();
+}
+
+// ── GENERADOR ─────────────────────────────────────────────────────────────────
+const qtyDisplay = document.getElementById('qty-val');
+document.getElementById('btn-menos').addEventListener('click', () => { if(qty>1){qty--;qtyDisplay.textContent=qty;} });
+document.getElementById('btn-mas').addEventListener('click', () => { if(qty<MAX_QTY){qty++;qtyDisplay.textContent=qty;} });
+
+function randInt(min, max) {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return min + (arr[0] % (max - min + 1));
+}
+function generarApuesta(conReintegro) {
+  const nums = new Set();
+  while (nums.size < 5) nums.add(randInt(1, 54));
+  const clave = randInt(0, 9);
+  const reintegro = conReintegro ? randInt(0, 9) : null;
+  return { nums: [...nums].sort((a,b) => a-b), clave, reintegro };
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+function renderBola(n, tipo) {
+  const labels = { normal: 'N.º', clave: 'Clave', reintegro: 'R' };
+  return `<div class="bola-wrap"><div class="bola bola-${tipo}">${pad(n)}</div><div class="bola-label">${labels[tipo]}</div></div>`;
+}
+function renderApuesta(ap, idx) {
+  const card = document.createElement('div');
+  card.className = 'apuesta-card';
+  card.style.animationDelay = `${idx * 0.08}s`;
+  card.innerHTML = `
+    <div class="apuesta-header">
+      <span class="apuesta-num">Apuesta ${idx + 1}</span>
+      <span class="apuesta-tipo">${ap.reintegro !== null ? 'Con reintegro' : 'Sin reintegro'}</span>
+    </div>
+    <div class="bolas-row">
+      ${ap.nums.map(n => renderBola(n, 'normal')).join('')}
+      <span class="separador">|</span>
+      ${renderBola(ap.clave, 'clave')}
+      ${ap.reintegro !== null ? `<span class="separador">·</span>${renderBola(ap.reintegro, 'reintegro')}` : ''}
+    </div>`;
+  return card;
+}
+function renderHistorial() {
+  const sec = document.getElementById('historial-section');
+  const cont = document.getElementById('historial-container');
+  if (!historial.length) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  cont.innerHTML = '';
+  [...historial].reverse().forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'hist-item';
+    const bolasHTML = entry.apuestas.map(ap => {
+      const nums = ap.nums.map(n => `<div class="hist-bola hist-bola-n">${pad(n)}</div>`).join('');
+      const clave = `<div class="hist-bola hist-bola-c">${pad(ap.clave)}</div>`;
+      const r = ap.reintegro !== null ? `<div class="hist-bola hist-bola-r">R${ap.reintegro}</div>` : '';
+      return `<div style="display:flex;gap:5px;flex-wrap:wrap;align-items:center">${nums}<span style="opacity:.3;font-size:14px">|</span>${clave}${r}</div>`;
+    }).join('<div style="height:5px"></div>');
+    div.innerHTML = `<div class="hist-meta">${entry.fecha} · ${entry.apuestas.length} apuesta${entry.apuestas.length>1?'s':''}</div>${bolasHTML}`;
+    cont.appendChild(div);
+  });
+}
+document.getElementById('btn-generar').addEventListener('click', () => {
+  const conReintegro = document.getElementById('chk-reintegro').checked;
+  const apuestas = Array.from({length: qty}, () => generarApuesta(conReintegro));
+  const cont = document.getElementById('apuestas-container');
+  cont.innerHTML = '';
+  apuestas.forEach((ap, i) => cont.appendChild(renderApuesta(ap, i)));
+  const now = new Date();
+  const fecha = `${now.toLocaleDateString('es-ES')} ${now.toLocaleTimeString('es-ES', {hour:'2-digit',minute:'2-digit'})}`;
+  historial.push({ fecha, apuestas });
+  if (historial.length > 20) historial.shift();
+  localStorage.setItem('gordo_hist', JSON.stringify(historial));
+  renderHistorial();
+});
+document.getElementById('btn-limpiar').addEventListener('click', () => {
+  historial = [];
+  localStorage.removeItem('gordo_hist');
+  renderHistorial();
+});
+
+// ── ESTADÍSTICAS ──────────────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const resp = await fetch(STATS_URL + '?t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    renderStats(data);
+    statsLoaded = true;
+  } catch(e) {
+    document.getElementById('stats-loading').style.display = 'none';
+    document.getElementById('stats-error').style.display = 'block';
+    console.error(e);
+  }
+}
+
+function renderStats(data) {
+  document.getElementById('stats-loading').style.display = 'none';
+  document.getElementById('stats-content').style.display = 'block';
+
+  // Meta
+  document.getElementById('stats-meta').innerHTML = `
+    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos analizados</span></div>
+    <div class="meta-item"><span class="meta-val">${data.fecha_ultimo_sorteo}</span><span class="meta-lbl">Último sorteo</span></div>
+    <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>`;
+
+  // Barras: más frecuentes
+  const maxFrec = data.top10_mas_frecuentes[0].frecuencia;
+  document.getElementById('bars-hot').innerHTML = data.top10_mas_frecuentes.map((item, i) => `
+    <div class="bar-row">
+      <div class="bar-bola bar-bola-hot">${pad(item.numero)}</div>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill-hot" style="width:${(item.frecuencia/maxFrec*100).toFixed(1)}%">
+          <span class="bar-count">${item.frecuencia}×</span>
+        </div>
+      </div>
+      <span class="bar-pct">${item.porcentaje}%</span>
+    </div>`).join('');
+
+  // Barras: menos frecuentes
+  const maxFrecCold = data.top10_menos_frecuentes[0].frecuencia;
+  document.getElementById('bars-cold').innerHTML = data.top10_menos_frecuentes.map(item => `
+    <div class="bar-row">
+      <div class="bar-bola bar-bola-cold">${pad(item.numero)}</div>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill-cold" style="width:${Math.max(10,(item.frecuencia/maxFrec*100)).toFixed(1)}%">
+          <span class="bar-count">${item.frecuencia}×</span>
+        </div>
+      </div>
+      <span class="bar-pct">${item.porcentaje}%</span>
+    </div>`).join('');
+
+  // Barras: claves
+  const maxClave = Math.max(...data.claves.map(c => c.frecuencia));
+  document.getElementById('bars-clave').innerHTML = data.claves.map(item => `
+    <div class="bar-row">
+      <div class="bar-bola bar-bola-clave">${item.clave}</div>
+      <div class="bar-track">
+        <div class="bar-fill bar-fill-clave" style="width:${(item.frecuencia/maxClave*100).toFixed(1)}%">
+          <span class="bar-count">${item.frecuencia}×</span>
+        </div>
+      </div>
+      <span class="bar-pct">${item.porcentaje}%</span>
+    </div>`).join('');
+}
+
+// Init
+renderHistorial();
+</script>
+</body>
+</html>
