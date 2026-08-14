@@ -1,14 +1,16 @@
-const CACHE = 'amimanera-v1';
-const URLS = [
+const CACHE = 'amimanera-v2';
+const PRECACHE = [
   '/AmiManera.html',
-  '/estadisticas_gordo.json',
-  '/estadisticas_euro.json',
-  '/estadisticas_primitiva.json'
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(URLS)).catch(() => {})
+    caches.open(CACHE)
+      .then(c => c.addAll(PRECACHE))
+      .catch(() => {})
   );
   self.skipWaiting();
 });
@@ -23,13 +25,19 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Solo gestionar peticiones GET
+  if (e.request.method !== 'GET') return;
+
   e.respondWith(
-    fetch(e.request)
-      .then(resp => {
-        const clone = resp.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
+    caches.match(e.request).then(cached => {
+      const fetchPromise = fetch(e.request).then(resp => {
+        if (resp && resp.status === 200) {
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
         return resp;
-      })
-      .catch(() => caches.match(e.request))
+      }).catch(() => cached);
+      return cached || fetchPromise;
+    })
   );
 });
