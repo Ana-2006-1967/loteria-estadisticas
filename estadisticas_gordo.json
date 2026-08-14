@@ -1,0 +1,434 @@
+{
+  "ultima_actualizacion": "12/07/2026 11:18",
+  "total_sorteos": 1108,
+  "fecha_primer_sorteo": "6/02/2005",
+  "fecha_ultimo_sorteo": "5/07/2026",
+  "numeros": [
+    {
+      "numero": 34,
+      "frecuencia": 131,
+      "porcentaje": 11.82
+    },
+    {
+      "numero": 11,
+      "frecuencia": 124,
+      "porcentaje": 11.19
+    },
+    {
+      "numero": 53,
+      "frecuencia": 119,
+      "porcentaje": 10.74
+    },
+    {
+      "numero": 6,
+      "frecuencia": 118,
+      "porcentaje": 10.65
+    },
+    {
+      "numero": 3,
+      "frecuencia": 116,
+      "porcentaje": 10.47
+    },
+    {
+      "numero": 9,
+      "frecuencia": 116,
+      "porcentaje": 10.47
+    },
+    {
+      "numero": 51,
+      "frecuencia": 114,
+      "porcentaje": 10.29
+    },
+    {
+      "numero": 19,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    },
+    {
+      "numero": 24,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    },
+    {
+      "numero": 37,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    },
+    {
+      "numero": 2,
+      "frecuencia": 112,
+      "porcentaje": 10.11
+    },
+    {
+      "numero": 27,
+      "frecuencia": 110,
+      "porcentaje": 9.93
+    },
+    {
+      "numero": 50,
+      "frecuencia": 109,
+      "porcentaje": 9.84
+    },
+    {
+      "numero": 18,
+      "frecuencia": 108,
+      "porcentaje": 9.75
+    },
+    {
+      "numero": 42,
+      "frecuencia": 108,
+      "porcentaje": 9.75
+    },
+    {
+      "numero": 54,
+      "frecuencia": 107,
+      "porcentaje": 9.66
+    },
+    {
+      "numero": 15,
+      "frecuencia": 106,
+      "porcentaje": 9.57
+    },
+    {
+      "numero": 48,
+      "frecuencia": 106,
+      "porcentaje": 9.57
+    },
+    {
+      "numero": 49,
+      "frecuencia": 106,
+      "porcentaje": 9.57
+    },
+    {
+      "numero": 12,
+      "frecuencia": 105,
+      "porcentaje": 9.48
+    },
+    {
+      "numero": 29,
+      "frecuencia": 105,
+      "porcentaje": 9.48
+    },
+    {
+      "numero": 45,
+      "frecuencia": 105,
+      "porcentaje": 9.48
+    },
+    {
+      "numero": 26,
+      "frecuencia": 104,
+      "porcentaje": 9.39
+    },
+    {
+      "numero": 8,
+      "frecuencia": 103,
+      "porcentaje": 9.3
+    },
+    {
+      "numero": 39,
+      "frecuencia": 103,
+      "porcentaje": 9.3
+    },
+    {
+      "numero": 23,
+      "frecuencia": 102,
+      "porcentaje": 9.21
+    },
+    {
+      "numero": 32,
+      "frecuencia": 102,
+      "porcentaje": 9.21
+    },
+    {
+      "numero": 38,
+      "frecuencia": 102,
+      "porcentaje": 9.21
+    },
+    {
+      "numero": 41,
+      "frecuencia": 102,
+      "porcentaje": 9.21
+    },
+    {
+      "numero": 13,
+      "frecuencia": 101,
+      "porcentaje": 9.12
+    },
+    {
+      "numero": 28,
+      "frecuencia": 100,
+      "porcentaje": 9.03
+    },
+    {
+      "numero": 33,
+      "frecuencia": 100,
+      "porcentaje": 9.03
+    },
+    {
+      "numero": 10,
+      "frecuencia": 99,
+      "porcentaje": 8.94
+    },
+    {
+      "numero": 22,
+      "frecuencia": 99,
+      "porcentaje": 8.94
+    },
+    {
+      "numero": 7,
+      "frecuencia": 98,
+      "porcentaje": 8.84
+    },
+    {
+      "numero": 21,
+      "frecuencia": 98,
+      "porcentaje": 8.84
+    },
+    {
+      "numero": 31,
+      "frecuencia": 98,
+      "porcentaje": 8.84
+    },
+    {
+      "numero": 36,
+      "frecuencia": 98,
+      "porcentaje": 8.84
+    },
+    {
+      "numero": 40,
+      "frecuencia": 98,
+      "porcentaje": 8.84
+    },
+    {
+      "numero": 44,
+      "frecuencia": 97,
+      "porcentaje": 8.75
+    },
+    {
+      "numero": 47,
+      "frecuencia": 97,
+      "porcentaje": 8.75
+    },
+    {
+      "numero": 4,
+      "frecuencia": 95,
+      "porcentaje": 8.57
+    },
+    {
+      "numero": 20,
+      "frecuencia": 95,
+      "porcentaje": 8.57
+    },
+    {
+      "numero": 17,
+      "frecuencia": 94,
+      "porcentaje": 8.48
+    },
+    {
+      "numero": 46,
+      "frecuencia": 94,
+      "porcentaje": 8.48
+    },
+    {
+      "numero": 14,
+      "frecuencia": 93,
+      "porcentaje": 8.39
+    },
+    {
+      "numero": 25,
+      "frecuencia": 93,
+      "porcentaje": 8.39
+    },
+    {
+      "numero": 35,
+      "frecuencia": 92,
+      "porcentaje": 8.3
+    },
+    {
+      "numero": 52,
+      "frecuencia": 92,
+      "porcentaje": 8.3
+    },
+    {
+      "numero": 5,
+      "frecuencia": 90,
+      "porcentaje": 8.12
+    },
+    {
+      "numero": 16,
+      "frecuencia": 90,
+      "porcentaje": 8.12
+    },
+    {
+      "numero": 43,
+      "frecuencia": 87,
+      "porcentaje": 7.85
+    },
+    {
+      "numero": 30,
+      "frecuencia": 81,
+      "porcentaje": 7.31
+    },
+    {
+      "numero": 1,
+      "frecuencia": 79,
+      "porcentaje": 7.13
+    }
+  ],
+  "claves": [
+    {
+      "clave": 8,
+      "frecuencia": 127,
+      "porcentaje": 11.46
+    },
+    {
+      "clave": 9,
+      "frecuencia": 125,
+      "porcentaje": 11.28
+    },
+    {
+      "clave": 2,
+      "frecuencia": 119,
+      "porcentaje": 10.74
+    },
+    {
+      "clave": 3,
+      "frecuencia": 114,
+      "porcentaje": 10.29
+    },
+    {
+      "clave": 7,
+      "frecuencia": 112,
+      "porcentaje": 10.11
+    },
+    {
+      "clave": 0,
+      "frecuencia": 105,
+      "porcentaje": 9.48
+    },
+    {
+      "clave": 5,
+      "frecuencia": 105,
+      "porcentaje": 9.48
+    },
+    {
+      "clave": 6,
+      "frecuencia": 103,
+      "porcentaje": 9.3
+    },
+    {
+      "clave": 1,
+      "frecuencia": 101,
+      "porcentaje": 9.12
+    },
+    {
+      "clave": 4,
+      "frecuencia": 97,
+      "porcentaje": 8.75
+    }
+  ],
+  "top10_mas_frecuentes": [
+    {
+      "numero": 34,
+      "frecuencia": 131,
+      "porcentaje": 11.82
+    },
+    {
+      "numero": 11,
+      "frecuencia": 124,
+      "porcentaje": 11.19
+    },
+    {
+      "numero": 53,
+      "frecuencia": 119,
+      "porcentaje": 10.74
+    },
+    {
+      "numero": 6,
+      "frecuencia": 118,
+      "porcentaje": 10.65
+    },
+    {
+      "numero": 3,
+      "frecuencia": 116,
+      "porcentaje": 10.47
+    },
+    {
+      "numero": 9,
+      "frecuencia": 116,
+      "porcentaje": 10.47
+    },
+    {
+      "numero": 51,
+      "frecuencia": 114,
+      "porcentaje": 10.29
+    },
+    {
+      "numero": 19,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    },
+    {
+      "numero": 24,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    },
+    {
+      "numero": 37,
+      "frecuencia": 113,
+      "porcentaje": 10.2
+    }
+  ],
+  "top10_menos_frecuentes": [
+    {
+      "numero": 1,
+      "frecuencia": 79,
+      "porcentaje": 7.13
+    },
+    {
+      "numero": 30,
+      "frecuencia": 81,
+      "porcentaje": 7.31
+    },
+    {
+      "numero": 43,
+      "frecuencia": 87,
+      "porcentaje": 7.85
+    },
+    {
+      "numero": 16,
+      "frecuencia": 90,
+      "porcentaje": 8.12
+    },
+    {
+      "numero": 5,
+      "frecuencia": 90,
+      "porcentaje": 8.12
+    },
+    {
+      "numero": 52,
+      "frecuencia": 92,
+      "porcentaje": 8.3
+    },
+    {
+      "numero": 35,
+      "frecuencia": 92,
+      "porcentaje": 8.3
+    },
+    {
+      "numero": 25,
+      "frecuencia": 93,
+      "porcentaje": 8.39
+    },
+    {
+      "numero": 14,
+      "frecuencia": 93,
+      "porcentaje": 8.39
+    },
+    {
+      "numero": 46,
+      "frecuencia": 94,
+      "porcentaje": 8.48
+    }
+  ]
+}
