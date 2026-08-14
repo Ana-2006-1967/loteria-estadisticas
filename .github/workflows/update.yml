@@ -1,8 +1,9 @@
-name: Actualizar Estadísticas Gordo
+name: Actualizar Estadísticas Lotería
 
 on:
   schedule:
     - cron: '0 21 * * 0'
+    - cron: '0 22 * * 2,5'
   workflow_dispatch:
 
 jobs:
@@ -21,15 +22,27 @@ jobs:
       - name: Instalar dependencias
         run: pip install requests
 
-      - name: Ejecutar update_stats.py
+      - name: Ejecutar update_stats.py (Gordo)
         env:
           LOTERIA_API_KEY: ${{ secrets.LOTERIA_API_KEY }}
         run: python update_stats.py
+
+      - name: Ejecutar update_euro.py (Euromillones)
+        env:
+          LOTERIA_API_KEY: ${{ secrets.LOTERIA_API_KEY }}
+        run: python update_euro.py
+
+      - name: Ejecutar update_primitiva.py (Primitiva)
+        env:
+          LOTERIA_API_KEY: ${{ secrets.LOTERIA_API_KEY }}
+        run: python update_primitiva.py
 
       - name: Commit y push si hay cambios
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add estadisticas_gordo.json gordo_historico.csv
+          git add estadisticas_euro.json euro_historico.csv
+          git add estadisticas_primitiva.json primitiva_historico.csv
           git diff --staged --quiet || git commit -m "stats: actualización automática $(date +'%d/%m/%Y')"
           git push
