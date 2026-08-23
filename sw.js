@@ -1,9 +1,12 @@
-const CACHE = 'amimanera-v2';
+const CACHE = 'amimanera-v3';
 const PRECACHE = [
   '/AmiManera.html',
   '/manifest.json',
   '/icon-192.png',
-  '/icon-512.png'
+  '/icon-512.png',
+  '/estadisticas_gordo.json',
+  '/estadisticas_euro.json',
+  '/estadisticas_primitiva.json'
 ];
 
 self.addEventListener('install', e => {
@@ -25,9 +28,7 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
-  // Solo gestionar peticiones GET
   if (e.request.method !== 'GET') return;
-
   e.respondWith(
     caches.match(e.request).then(cached => {
       const fetchPromise = fetch(e.request).then(resp => {
