@@ -6,11 +6,14 @@
   "start_url": "/AmiManera.html",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait",
   "background_color": "#080808",
   "theme_color": "#080808",
   "lang": "es",
+  "dir": "ltr",
   "categories": ["games", "lifestyle"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
@@ -24,6 +27,29 @@
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Pantalla de inicio de A mi manera"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "El Gordo",
+      "short_name": "Gordo",
+      "description": "Generar apuesta El Gordo de la Primitiva",
+      "url": "/AmiManera.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Euromillones",
+      "short_name": "Euro",
+      "description": "Generar apuesta Euromillones",
+      "url": "/AmiManera.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "La Primitiva",
+      "short_name": "Primitiva",
+      "description": "Generar apuesta La Primitiva",
+      "url": "/AmiManera.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ],
   "prefer_related_applications": false
