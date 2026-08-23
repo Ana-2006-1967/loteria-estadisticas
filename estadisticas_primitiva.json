@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "21/08/2026 22:12",
+  "ultima_actualizacion": "22/08/2026 11:30",
   "total_sorteos": 4159,
   "fecha_primer_sorteo": "17/10/1985",
   "fecha_ultimo_sorteo": "9/07/2026",
@@ -7,455 +7,741 @@
     {
       "numero": 39,
       "frecuencia": 544,
-      "porcentaje": 13.08
+      "porcentaje": 13.08,
+      "dias_retraso": 7
     },
     {
       "numero": 38,
       "frecuencia": 543,
-      "porcentaje": 13.06
+      "porcentaje": 13.06,
+      "dias_retraso": 0
     },
     {
       "numero": 1,
       "frecuencia": 539,
-      "porcentaje": 12.96
+      "porcentaje": 12.96,
+      "dias_retraso": 5
     },
     {
       "numero": 45,
       "frecuencia": 535,
-      "porcentaje": 12.86
+      "porcentaje": 12.86,
+      "dias_retraso": 28
     },
     {
       "numero": 3,
       "frecuencia": 532,
-      "porcentaje": 12.79
+      "porcentaje": 12.79,
+      "dias_retraso": 6
     },
     {
       "numero": 40,
       "frecuencia": 531,
-      "porcentaje": 12.77
+      "porcentaje": 12.77,
+      "dias_retraso": 3
     },
     {
       "numero": 41,
       "frecuencia": 531,
-      "porcentaje": 12.77
+      "porcentaje": 12.77,
+      "dias_retraso": 10
     },
     {
       "numero": 30,
       "frecuencia": 529,
-      "porcentaje": 12.72
+      "porcentaje": 12.72,
+      "dias_retraso": 0
     },
     {
       "numero": 5,
       "frecuencia": 527,
-      "porcentaje": 12.67
+      "porcentaje": 12.67,
+      "dias_retraso": 3
     },
     {
       "numero": 23,
       "frecuencia": 525,
-      "porcentaje": 12.62
+      "porcentaje": 12.62,
+      "dias_retraso": 11
     },
     {
       "numero": 47,
       "frecuencia": 525,
-      "porcentaje": 12.62
+      "porcentaje": 12.62,
+      "dias_retraso": 4
     },
     {
       "numero": 14,
       "frecuencia": 523,
-      "porcentaje": 12.58
+      "porcentaje": 12.58,
+      "dias_retraso": 3
     },
     {
       "numero": 10,
       "frecuencia": 522,
-      "porcentaje": 12.55
+      "porcentaje": 12.55,
+      "dias_retraso": 6
     },
     {
       "numero": 15,
       "frecuencia": 522,
-      "porcentaje": 12.55
+      "porcentaje": 12.55,
+      "dias_retraso": 6
     },
     {
       "numero": 6,
       "frecuencia": 521,
-      "porcentaje": 12.53
+      "porcentaje": 12.53,
+      "dias_retraso": 14
     },
     {
       "numero": 12,
       "frecuencia": 520,
-      "porcentaje": 12.5
+      "porcentaje": 12.5,
+      "dias_retraso": 3
     },
     {
       "numero": 36,
       "frecuencia": 520,
-      "porcentaje": 12.5
+      "porcentaje": 12.5,
+      "dias_retraso": 5
     },
     {
       "numero": 22,
       "frecuencia": 519,
-      "porcentaje": 12.48
+      "porcentaje": 12.48,
+      "dias_retraso": 0
     },
     {
       "numero": 7,
       "frecuencia": 517,
-      "porcentaje": 12.43
+      "porcentaje": 12.43,
+      "dias_retraso": 8
     },
     {
       "numero": 11,
       "frecuencia": 517,
-      "porcentaje": 12.43
+      "porcentaje": 12.43,
+      "dias_retraso": 7
     },
     {
       "numero": 28,
       "frecuencia": 515,
-      "porcentaje": 12.38
+      "porcentaje": 12.38,
+      "dias_retraso": 0
     },
     {
       "numero": 37,
       "frecuencia": 515,
-      "porcentaje": 12.38
+      "porcentaje": 12.38,
+      "dias_retraso": 5
     },
     {
       "numero": 29,
       "frecuencia": 511,
-      "porcentaje": 12.29
+      "porcentaje": 12.29,
+      "dias_retraso": 10
     },
     {
       "numero": 35,
       "frecuencia": 511,
-      "porcentaje": 12.29
+      "porcentaje": 12.29,
+      "dias_retraso": 0
     },
     {
       "numero": 19,
       "frecuencia": 510,
-      "porcentaje": 12.26
+      "porcentaje": 12.26,
+      "dias_retraso": 2
     },
     {
       "numero": 43,
       "frecuencia": 510,
-      "porcentaje": 12.26
+      "porcentaje": 12.26,
+      "dias_retraso": 0
     },
     {
       "numero": 46,
       "frecuencia": 507,
-      "porcentaje": 12.19
+      "porcentaje": 12.19,
+      "dias_retraso": 18
     },
     {
       "numero": 48,
       "frecuencia": 506,
-      "porcentaje": 12.17
+      "porcentaje": 12.17,
+      "dias_retraso": 1
     },
     {
       "numero": 2,
       "frecuencia": 505,
-      "porcentaje": 12.14
+      "porcentaje": 12.14,
+      "dias_retraso": 13
     },
     {
       "numero": 16,
       "frecuencia": 505,
-      "porcentaje": 12.14
+      "porcentaje": 12.14,
+      "dias_retraso": 14
     },
     {
       "numero": 34,
       "frecuencia": 504,
-      "porcentaje": 12.12
+      "porcentaje": 12.12,
+      "dias_retraso": 17
     },
     {
       "numero": 26,
       "frecuencia": 501,
-      "porcentaje": 12.05
+      "porcentaje": 12.05,
+      "dias_retraso": 18
     },
     {
       "numero": 17,
       "frecuencia": 499,
-      "porcentaje": 12.0
+      "porcentaje": 12.0,
+      "dias_retraso": 4
     },
     {
       "numero": 9,
       "frecuencia": 498,
-      "porcentaje": 11.97
+      "porcentaje": 11.97,
+      "dias_retraso": 18
     },
     {
       "numero": 44,
       "frecuencia": 498,
-      "porcentaje": 11.97
+      "porcentaje": 11.97,
+      "dias_retraso": 2
     },
     {
       "numero": 42,
       "frecuencia": 497,
-      "porcentaje": 11.95
+      "porcentaje": 11.95,
+      "dias_retraso": 5
     },
     {
       "numero": 32,
       "frecuencia": 495,
-      "porcentaje": 11.9
+      "porcentaje": 11.9,
+      "dias_retraso": 1
     },
     {
       "numero": 13,
       "frecuencia": 494,
-      "porcentaje": 11.88
+      "porcentaje": 11.88,
+      "dias_retraso": 1
     },
     {
       "numero": 21,
       "frecuencia": 494,
-      "porcentaje": 11.88
+      "porcentaje": 11.88,
+      "dias_retraso": 11
     },
     {
       "numero": 18,
       "frecuencia": 493,
-      "porcentaje": 11.85
+      "porcentaje": 11.85,
+      "dias_retraso": 4
     },
     {
       "numero": 31,
       "frecuencia": 490,
-      "porcentaje": 11.78
+      "porcentaje": 11.78,
+      "dias_retraso": 22
     },
     {
       "numero": 4,
       "frecuencia": 488,
-      "porcentaje": 11.73
+      "porcentaje": 11.73,
+      "dias_retraso": 16
     },
     {
       "numero": 8,
       "frecuencia": 485,
-      "porcentaje": 11.66
+      "porcentaje": 11.66,
+      "dias_retraso": 24
     },
     {
       "numero": 33,
       "frecuencia": 485,
-      "porcentaje": 11.66
+      "porcentaje": 11.66,
+      "dias_retraso": 1
     },
     {
       "numero": 49,
       "frecuencia": 482,
-      "porcentaje": 11.59
+      "porcentaje": 11.59,
+      "dias_retraso": 12
     },
     {
       "numero": 25,
       "frecuencia": 481,
-      "porcentaje": 11.57
+      "porcentaje": 11.57,
+      "dias_retraso": 2
     },
     {
       "numero": 27,
       "frecuencia": 481,
-      "porcentaje": 11.57
+      "porcentaje": 11.57,
+      "dias_retraso": 9
     },
     {
       "numero": 24,
       "frecuencia": 479,
-      "porcentaje": 11.52
+      "porcentaje": 11.52,
+      "dias_retraso": 4
     },
     {
       "numero": 20,
       "frecuencia": 473,
-      "porcentaje": 11.37
+      "porcentaje": 11.37,
+      "dias_retraso": 11
     }
   ],
   "complementarios": [
     {
       "numero": 32,
       "frecuencia": 113,
-      "porcentaje": 2.72
+      "porcentaje": 2.72,
+      "dias_retraso": 52
     },
     {
       "numero": 18,
       "frecuencia": 101,
-      "porcentaje": 2.43
+      "porcentaje": 2.43,
+      "dias_retraso": 8
     },
     {
       "numero": 29,
       "frecuencia": 101,
-      "porcentaje": 2.43
+      "porcentaje": 2.43,
+      "dias_retraso": 30
     },
     {
       "numero": 44,
       "frecuencia": 99,
-      "porcentaje": 2.38
+      "porcentaje": 2.38,
+      "dias_retraso": 24
     },
     {
       "numero": 21,
       "frecuencia": 98,
-      "porcentaje": 2.36
+      "porcentaje": 2.36,
+      "dias_retraso": 45
     },
     {
       "numero": 24,
       "frecuencia": 95,
-      "porcentaje": 2.28
+      "porcentaje": 2.28,
+      "dias_retraso": 1
     },
     {
       "numero": 6,
       "frecuencia": 94,
-      "porcentaje": 2.26
+      "porcentaje": 2.26,
+      "dias_retraso": 48
     },
     {
       "numero": 8,
       "frecuencia": 94,
-      "porcentaje": 2.26
+      "porcentaje": 2.26,
+      "dias_retraso": 59
     },
     {
       "numero": 11,
       "frecuencia": 92,
-      "porcentaje": 2.21
+      "porcentaje": 2.21,
+      "dias_retraso": 71
     },
     {
       "numero": 27,
       "frecuencia": 92,
-      "porcentaje": 2.21
+      "porcentaje": 2.21,
+      "dias_retraso": 16
     }
   ],
   "reintegros": [
     {
       "reintegro": 0,
       "frecuencia": 672,
-      "porcentaje": 16.16
+      "porcentaje": 16.16,
+      "dias_retraso": 7
     },
     {
       "reintegro": 8,
       "frecuencia": 423,
-      "porcentaje": 10.17
+      "porcentaje": 10.17,
+      "dias_retraso": 0
     },
     {
       "reintegro": 2,
       "frecuencia": 417,
-      "porcentaje": 10.03
+      "porcentaje": 10.03,
+      "dias_retraso": 4
     },
     {
       "reintegro": 5,
       "frecuencia": 413,
-      "porcentaje": 9.93
+      "porcentaje": 9.93,
+      "dias_retraso": 3
     },
     {
       "reintegro": 3,
       "frecuencia": 385,
-      "porcentaje": 9.26
+      "porcentaje": 9.26,
+      "dias_retraso": 8
     },
     {
       "reintegro": 1,
       "frecuencia": 382,
-      "porcentaje": 9.18
+      "porcentaje": 9.18,
+      "dias_retraso": 10
     },
     {
       "reintegro": 9,
       "frecuencia": 379,
-      "porcentaje": 9.11
+      "porcentaje": 9.11,
+      "dias_retraso": 11
     },
     {
       "reintegro": 6,
       "frecuencia": 367,
-      "porcentaje": 8.82
+      "porcentaje": 8.82,
+      "dias_retraso": 1
     },
     {
       "reintegro": 4,
       "frecuencia": 364,
-      "porcentaje": 8.75
+      "porcentaje": 8.75,
+      "dias_retraso": 18
     },
     {
       "reintegro": 7,
       "frecuencia": 357,
-      "porcentaje": 8.58
+      "porcentaje": 8.58,
+      "dias_retraso": 14
     }
   ],
   "top10_mas_frecuentes": [
     {
       "numero": 39,
       "frecuencia": 544,
-      "porcentaje": 13.08
+      "porcentaje": 13.08,
+      "dias_retraso": 7
     },
     {
       "numero": 38,
       "frecuencia": 543,
-      "porcentaje": 13.06
+      "porcentaje": 13.06,
+      "dias_retraso": 0
     },
     {
       "numero": 1,
       "frecuencia": 539,
-      "porcentaje": 12.96
+      "porcentaje": 12.96,
+      "dias_retraso": 5
     },
     {
       "numero": 45,
       "frecuencia": 535,
-      "porcentaje": 12.86
+      "porcentaje": 12.86,
+      "dias_retraso": 28
     },
     {
       "numero": 3,
       "frecuencia": 532,
-      "porcentaje": 12.79
+      "porcentaje": 12.79,
+      "dias_retraso": 6
     },
     {
       "numero": 40,
       "frecuencia": 531,
-      "porcentaje": 12.77
+      "porcentaje": 12.77,
+      "dias_retraso": 3
     },
     {
       "numero": 41,
       "frecuencia": 531,
-      "porcentaje": 12.77
+      "porcentaje": 12.77,
+      "dias_retraso": 10
     },
     {
       "numero": 30,
       "frecuencia": 529,
-      "porcentaje": 12.72
+      "porcentaje": 12.72,
+      "dias_retraso": 0
     },
     {
       "numero": 5,
       "frecuencia": 527,
-      "porcentaje": 12.67
+      "porcentaje": 12.67,
+      "dias_retraso": 3
     },
     {
       "numero": 23,
       "frecuencia": 525,
-      "porcentaje": 12.62
+      "porcentaje": 12.62,
+      "dias_retraso": 11
     }
   ],
   "top10_menos_frecuentes": [
     {
       "numero": 20,
       "frecuencia": 473,
-      "porcentaje": 11.37
+      "porcentaje": 11.37,
+      "dias_retraso": 11
     },
     {
       "numero": 24,
       "frecuencia": 479,
-      "porcentaje": 11.52
+      "porcentaje": 11.52,
+      "dias_retraso": 4
     },
     {
       "numero": 27,
       "frecuencia": 481,
-      "porcentaje": 11.57
+      "porcentaje": 11.57,
+      "dias_retraso": 9
     },
     {
       "numero": 25,
       "frecuencia": 481,
-      "porcentaje": 11.57
+      "porcentaje": 11.57,
+      "dias_retraso": 2
     },
     {
       "numero": 49,
       "frecuencia": 482,
-      "porcentaje": 11.59
+      "porcentaje": 11.59,
+      "dias_retraso": 12
     },
     {
       "numero": 33,
       "frecuencia": 485,
-      "porcentaje": 11.66
+      "porcentaje": 11.66,
+      "dias_retraso": 1
     },
     {
       "numero": 8,
       "frecuencia": 485,
-      "porcentaje": 11.66
+      "porcentaje": 11.66,
+      "dias_retraso": 24
     },
     {
       "numero": 4,
       "frecuencia": 488,
-      "porcentaje": 11.73
+      "porcentaje": 11.73,
+      "dias_retraso": 16
     },
     {
       "numero": 31,
       "frecuencia": 490,
-      "porcentaje": 11.78
+      "porcentaje": 11.78,
+      "dias_retraso": 22
     },
     {
       "numero": 18,
       "frecuencia": 493,
-      "porcentaje": 11.85
+      "porcentaje": 11.85,
+      "dias_retraso": 4
     }
-  ]
+  ],
+  "ventanas": {
+    "v20": {
+      "sorteos": 20,
+      "numeros": [
+        {
+          "numero": 43,
+          "frecuencia": 7,
+          "porcentaje": 35.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 33,
+          "frecuencia": 6,
+          "porcentaje": 30.0,
+          "dias_retraso": 1
+        },
+        {
+          "numero": 12,
+          "frecuencia": 5,
+          "porcentaje": 25.0,
+          "dias_retraso": 3
+        },
+        {
+          "numero": 25,
+          "frecuencia": 5,
+          "porcentaje": 25.0,
+          "dias_retraso": 2
+        },
+        {
+          "numero": 1,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 5
+        },
+        {
+          "numero": 10,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 6
+        },
+        {
+          "numero": 22,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 28,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 32,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 1
+        },
+        {
+          "numero": 35,
+          "frecuencia": 4,
+          "porcentaje": 20.0,
+          "dias_retraso": 0
+        }
+      ]
+    },
+    "v50": {
+      "sorteos": 50,
+      "numeros": [
+        {
+          "numero": 43,
+          "frecuencia": 13,
+          "porcentaje": 26.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 33,
+          "frecuencia": 12,
+          "porcentaje": 24.0,
+          "dias_retraso": 1
+        },
+        {
+          "numero": 28,
+          "frecuencia": 10,
+          "porcentaje": 20.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 30,
+          "frecuencia": 10,
+          "porcentaje": 20.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 40,
+          "frecuencia": 10,
+          "porcentaje": 20.0,
+          "dias_retraso": 3
+        },
+        {
+          "numero": 10,
+          "frecuencia": 9,
+          "porcentaje": 18.0,
+          "dias_retraso": 6
+        },
+        {
+          "numero": 18,
+          "frecuencia": 9,
+          "porcentaje": 18.0,
+          "dias_retraso": 4
+        },
+        {
+          "numero": 22,
+          "frecuencia": 9,
+          "porcentaje": 18.0,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 6,
+          "frecuencia": 8,
+          "porcentaje": 16.0,
+          "dias_retraso": 14
+        },
+        {
+          "numero": 12,
+          "frecuencia": 8,
+          "porcentaje": 16.0,
+          "dias_retraso": 3
+        }
+      ]
+    },
+    "v1a": {
+      "sorteos": 137,
+      "numeros": [
+        {
+          "numero": 12,
+          "frecuencia": 26,
+          "porcentaje": 18.98,
+          "dias_retraso": 3
+        },
+        {
+          "numero": 2,
+          "frecuencia": 24,
+          "porcentaje": 17.52,
+          "dias_retraso": 13
+        },
+        {
+          "numero": 36,
+          "frecuencia": 24,
+          "porcentaje": 17.52,
+          "dias_retraso": 5
+        },
+        {
+          "numero": 25,
+          "frecuencia": 22,
+          "porcentaje": 16.06,
+          "dias_retraso": 2
+        },
+        {
+          "numero": 40,
+          "frecuencia": 22,
+          "porcentaje": 16.06,
+          "dias_retraso": 3
+        },
+        {
+          "numero": 16,
+          "frecuencia": 21,
+          "porcentaje": 15.33,
+          "dias_retraso": 14
+        },
+        {
+          "numero": 28,
+          "frecuencia": 21,
+          "porcentaje": 15.33,
+          "dias_retraso": 0
+        },
+        {
+          "numero": 18,
+          "frecuencia": 20,
+          "porcentaje": 14.6,
+          "dias_retraso": 4
+        },
+        {
+          "numero": 39,
+          "frecuencia": 20,
+          "porcentaje": 14.6,
+          "dias_retraso": 7
+        },
+        {
+          "numero": 8,
+          "frecuencia": 19,
+          "porcentaje": 13.87,
+          "dias_retraso": 24
+        }
+      ]
+    }
+  }
 }

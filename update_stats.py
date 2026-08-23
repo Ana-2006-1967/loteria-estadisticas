@@ -1,197 +1,169 @@
 #!/usr/bin/env python3
 """
-update_stats.py
-Proyecto Lotería Estadísticas - Ana Mª García Carralero
-------------------------------------------------------
-1. Lee el CSV histórico del Gordo de la Primitiva
-2. Llama a la API de loteriasapi.com para obtener el último sorteo
-3. Si es nuevo, lo añade al CSV
-4. Calcula estadísticas de frecuencia
-5. Genera estadisticas_gordo.json
+update_stats.py — El Gordo de la Primitiva
+Fase 2: añade dias_retraso por número y estadísticas por ventana de tiempo
 """
 
-import csv
-import json
-import os
-import requests
-from datetime import datetime
+import csv, json, os, requests
+from datetime import datetime, timedelta
 from collections import Counter
 from pathlib import Path
 
-# ── Configuración ──────────────────────────────────────────────────────────────
-CSV_PATH       = Path("gordo_historico.csv")
-JSON_PATH      = Path("estadisticas_gordo.json")
-API_KEY        = os.environ.get("LOTERIA_API_KEY", "")
-API_URL        = "https://api.loteriasapi.com/api/v1/results/gordo/latest"
+CSV_PATH  = Path("gordo_historico.csv")
+JSON_PATH = Path("estadisticas_gordo.json")
+API_KEY   = os.environ.get("LOTERIA_API_KEY", "")
+API_URL   = "https://api.loteriasapi.com/api/v1/results/gordo/latest"
 
-# ── 1. Leer CSV histórico ──────────────────────────────────────────────────────
+def parse_fecha(s):
+    for fmt in ("%d/%m/%Y", "%-d/%m/%Y", "%Y-%m-%d"):
+        try: return datetime.strptime(s.strip(), fmt)
+        except: pass
+    return None
+
 def leer_csv():
     sorteos = []
-    if not CSV_PATH.exists():
-        print(f"[ERROR] No se encuentra {CSV_PATH}")
-        return sorteos
-
+    if not CSV_PATH.exists(): print(f"[ERROR] No se encuentra {CSV_PATH}"); return sorteos
     with open(CSV_PATH, encoding="utf-8-sig", newline="") as f:
         reader = csv.reader(f)
-        next(reader)  # saltar cabecera
+        next(reader)
         for row in reader:
             row = [c.strip() for c in row]
-            if len(row) < 7 or not row[0]:
-                continue
+            if len(row) < 7 or not row[0]: continue
             try:
                 fecha = row[0]
                 nums  = [int(row[i]) for i in range(1, 6)]
                 clave = int(row[6])
                 sorteos.append({"fecha": fecha, "numeros": sorted(nums), "clave": clave})
-            except (ValueError, IndexError):
-                continue
-
-    print(f"[CSV] {len(sorteos)} sorteos cargados desde {CSV_PATH}")
+            except: continue
+    print(f"[CSV] {len(sorteos)} sorteos cargados")
     return sorteos
 
-
-# ── 2. Obtener último sorteo de la API ─────────────────────────────────────────
-def obtener_ultimo_sorteo():
-    if not API_KEY:
-        print("[API] Sin API key — se omite consulta a la API")
-        return None
-
+def obtener_ultimo():
+    if not API_KEY: print("[API] Sin key"); return None
     try:
         resp = requests.get(API_URL, headers={"X-API-Key": API_KEY}, timeout=15)
         resp.raise_for_status()
         data = resp.json()
-
-        # Adaptar según la estructura de respuesta de loteriasapi.com
-        fecha  = data.get("date") or data.get("fecha") or data.get("draw_date", "")
-        nums   = data.get("numbers") or data.get("numeros") or []
-        clave  = data.get("key_number") or data.get("clave") or data.get("reintegro") or 0
-
-        if not fecha or not nums:
-            print("[API] Respuesta inesperada:", data)
-            return None
-
-        # Normalizar fecha a formato d/mm/yyyy
-        for fmt in ("%Y-%m-%d", "%d/%m/%Y", "%d-%m-%Y"):
-            try:
-                dt = datetime.strptime(str(fecha), fmt)
-                fecha_norm = dt.strftime("%-d/%m/%Y")
-                break
-            except ValueError:
-                continue
-        else:
-            fecha_norm = str(fecha)
-
+        fecha = data.get("date") or data.get("fecha") or data.get("draw_date","")
+        nums  = data.get("numbers") or data.get("numeros") or []
+        clave = data.get("key_number") or data.get("clave") or 0
+        if not fecha or not nums: return None
+        for fmt in ("%Y-%m-%d","%-d/%m/%Y","%d/%m/%Y"):
+            try: fecha_norm = datetime.strptime(str(fecha),fmt).strftime("%-d/%m/%Y"); break
+            except: continue
+        else: fecha_norm = str(fecha)
         return {"fecha": fecha_norm, "numeros": sorted([int(n) for n in nums]), "clave": int(clave)}
+    except Exception as e: print(f"[API] {e}"); return None
 
-    except Exception as e:
-        print(f"[API] Error al consultar la API: {e}")
-        return None
-
-
-# ── 3. Añadir sorteo nuevo al CSV si no existe ─────────────────────────────────
 def añadir_si_nuevo(sorteos, nuevo):
-    if nuevo is None:
-        return sorteos
-
-    fechas_existentes = {s["fecha"] for s in sorteos}
-    if nuevo["fecha"] in fechas_existentes:
-        print(f"[API] Sorteo del {nuevo['fecha']} ya existe en el CSV — sin cambios")
-        return sorteos
-
-    print(f"[API] Nuevo sorteo encontrado: {nuevo['fecha']} — añadiendo al CSV")
-    sorteos.insert(0, nuevo)  # más reciente primero
-
-    # Reescribir CSV
-    with open(CSV_PATH, "w", encoding="utf-8", newline="") as f:
+    if nuevo is None: return sorteos
+    if nuevo["fecha"] in {s["fecha"] for s in sorteos}:
+        print(f"[API] Ya existe {nuevo['fecha']}"); return sorteos
+    print(f"[API] Nuevo: {nuevo['fecha']}")
+    sorteos.insert(0, nuevo)
+    with open(CSV_PATH,"w",encoding="utf-8",newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["FECHA", "COMB. GANADORA", "", "", "", "", "CLAVE / R"])
+        writer.writerow(["FECHA","COMB. GANADORA","","","","","CLAVE / R"])
         for s in sorteos:
-            nums = s["numeros"]
-            writer.writerow([s["fecha"]] + [str(n).zfill(2) for n in nums] + [str(s["clave"])])
-
-    print(f"[CSV] Archivo actualizado con {len(sorteos)} sorteos")
+            writer.writerow([s["fecha"]]+[str(n).zfill(2) for n in s["numeros"]]+[str(s["clave"])])
+    print(f"[CSV] Actualizado con {len(sorteos)} sorteos")
     return sorteos
 
+def calcular_retraso(sorteos, rango_nums, campo="numeros"):
+    """Calcula cuántos sorteos lleva cada número sin aparecer."""
+    retraso = {}
+    for n in rango_nums:
+        retraso[n] = 0
+        for i, s in enumerate(sorteos):
+            vals = s[campo] if campo == "numeros" else [s[campo]]
+            if n in vals:
+                retraso[n] = i  # posición = sorteos desde la última aparición
+                break
+        else:
+            retraso[n] = len(sorteos)  # nunca ha salido
+    return retraso
 
-# ── 4. Calcular estadísticas ───────────────────────────────────────────────────
+def calcular_ventana(sorteos, n_sorteos=None, dias=None):
+    """Filtra sorteos por ventana de tiempo o cantidad."""
+    if n_sorteos:
+        return sorteos[:n_sorteos]
+    if dias:
+        corte = datetime.now() - timedelta(days=dias)
+        return [s for s in sorteos if parse_fecha(s["fecha"]) and parse_fecha(s["fecha"]) >= corte]
+    return sorteos
+
+def stats_numeros(sorteos, rango, total, retraso_map, campo="numeros"):
+    cnt = Counter()
+    for s in sorteos:
+        vals = s[campo] if campo == "numeros" else [s[campo]]
+        for v in vals: cnt[v] += 1
+    result = []
+    for n in rango:
+        count = cnt.get(n, 0)
+        result.append({
+            "numero":       n,
+            "frecuencia":   count,
+            "porcentaje":   round(count / total * 100, 2) if total else 0,
+            "dias_retraso": retraso_map.get(n, 0)
+        })
+    return sorted(result, key=lambda x: x["frecuencia"], reverse=True)
+
 def calcular_estadisticas(sorteos):
     total = len(sorteos)
-    if total == 0:
-        return {}
+    if not total: return {}
 
-    # Frecuencias de números (1–54)
-    contador_nums  = Counter()
-    contador_clave = Counter()
+    rango_nums  = range(1, 55)
+    rango_clave = range(0, 10)
 
-    for s in sorteos:
-        for n in s["numeros"]:
-            contador_nums[n] += 1
-        contador_clave[s["clave"]] += 1
+    retraso_nums  = calcular_retraso(sorteos, rango_nums, "numeros")
+    retraso_clave = calcular_retraso(sorteos, rango_clave, "clave")
 
-    # Construir ranking de números
-    nums_stats = []
-    for n in range(1, 55):
-        count = contador_nums.get(n, 0)
-        nums_stats.append({
-            "numero":    n,
-            "frecuencia": count,
-            "porcentaje": round(count / total * 100, 2)
-        })
-    nums_stats.sort(key=lambda x: x["frecuencia"], reverse=True)
+    nums_stats  = stats_numeros(sorteos, rango_nums,  total, retraso_nums,  "numeros")
+    clave_stats = stats_numeros(sorteos, rango_clave, total, retraso_clave, "clave")
 
-    # Ranking de claves (0–9)
-    clave_stats = []
-    for c in range(0, 10):
-        count = contador_clave.get(c, 0)
-        clave_stats.append({
-            "clave":     c,
-            "frecuencia": count,
-            "porcentaje": round(count / total * 100, 2)
-        })
-    clave_stats.sort(key=lambda x: x["frecuencia"], reverse=True)
-
-    # Top 10 y bottom 10
-    top10    = nums_stats[:10]
-    bottom10 = nums_stats[-10:][::-1]  # menos frecuentes primero
-
-    # Fecha más antigua y más reciente
-    fechas = [s["fecha"] for s in sorteos]
+    # Ventanas de tiempo
+    v20  = calcular_ventana(sorteos, n_sorteos=20)
+    v50  = calcular_ventana(sorteos, n_sorteos=50)
+    v1a  = calcular_ventana(sorteos, dias=365)
+    # Histórico = sorteos completos
 
     return {
-        "ultima_actualizacion": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "total_sorteos":        total,
-        "fecha_primer_sorteo":  fechas[-1],
-        "fecha_ultimo_sorteo":  fechas[0],
-        "numeros":              nums_stats,
-        "claves":               clave_stats,
-        "top10_mas_frecuentes": top10,
-        "top10_menos_frecuentes": bottom10
+        "ultima_actualizacion":   datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "total_sorteos":          total,
+        "fecha_primer_sorteo":    sorteos[-1]["fecha"],
+        "fecha_ultimo_sorteo":    sorteos[0]["fecha"],
+        "numeros":                nums_stats,
+        "claves":                 clave_stats,
+        "top10_mas_frecuentes":   nums_stats[:10],
+        "top10_menos_frecuentes": nums_stats[-10:][::-1],
+        "ventanas": {
+            "v20": {
+                "sorteos": len(v20),
+                "numeros": stats_numeros(v20, rango_nums, len(v20), retraso_nums, "numeros")[:10]
+            },
+            "v50": {
+                "sorteos": len(v50),
+                "numeros": stats_numeros(v50, rango_nums, len(v50), retraso_nums, "numeros")[:10]
+            },
+            "v1a": {
+                "sorteos": len(v1a),
+                "numeros": stats_numeros(v1a, rango_nums, len(v1a), retraso_nums, "numeros")[:10]
+            }
+        }
     }
 
-
-# ── 5. Guardar JSON ────────────────────────────────────────────────────────────
 def guardar_json(stats):
-    with open(JSON_PATH, "w", encoding="utf-8") as f:
-        json.dump(stats, f, ensure_ascii=False, indent=2)
-    print(f"[JSON] {JSON_PATH} generado correctamente")
-    print(f"       Total sorteos: {stats['total_sorteos']}")
-    print(f"       Último sorteo: {stats['fecha_ultimo_sorteo']}")
-    print(f"       Top 3 números: {[x['numero'] for x in stats['top10_mas_frecuentes'][:3]]}")
+    with open(JSON_PATH,"w",encoding="utf-8") as f:
+        json.dump(stats,f,ensure_ascii=False,indent=2)
+    print(f"[OK] {JSON_PATH} — {stats['total_sorteos']} sorteos")
+    print(f"     Top3: {[x['numero'] for x in stats['top10_mas_frecuentes'][:3]]}")
+    print(f"     Retraso top1: {stats['top10_mas_frecuentes'][0]['dias_retraso']} sorteos")
 
-
-# ── MAIN ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("=" * 55)
-    print("  Proyecto Lotería Estadísticas — El Gordo")
-    print(f"  Ejecutado: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-    print("=" * 55)
-
-    sorteos   = leer_csv()
-    nuevo     = obtener_ultimo_sorteo()
-    sorteos   = añadir_si_nuevo(sorteos, nuevo)
-    stats     = calcular_estadisticas(sorteos)
+    print("="*55+"\n  El Gordo — Fase 2\n"+"="*55)
+    sorteos = leer_csv()
+    nuevo   = obtener_ultimo()
+    sorteos = añadir_si_nuevo(sorteos, nuevo)
+    stats   = calcular_estadisticas(sorteos)
     guardar_json(stats)
-
-    print("=" * 55)
-    print("  ¡Listo!")
-    print("=" * 55)
+    print("="*55+"\n  Listo!\n"+"="*55)

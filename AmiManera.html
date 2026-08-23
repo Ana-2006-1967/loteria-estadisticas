@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>A mi manera</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#080808">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -188,8 +193,26 @@ nav {
 .loading-box { text-align:center; padding:40px 20px; color:rgba(240,234,214,0.3); font-size:12px; letter-spacing:2px; }
 .spin { display:block; font-size:32px; margin-bottom:10px; animation:spin 1.5s linear infinite; }
 @keyframes spin { to{transform:rotate(360deg)} }
-
 .empty-gen { text-align:center; padding:30px; color:rgba(240,234,214,0.2); font-size:12px; letter-spacing:2px; }
+
+/* VENTANA DE TIEMPO */
+.ventana-label { font-size:10px; letter-spacing:3px; color:rgba(240,234,214,0.4); text-transform:uppercase; margin:0 0 8px; }
+.ventana-btns { display:flex; gap:6px; margin-bottom:16px; }
+.ventana-btn {
+  flex:1; padding:8px 4px; border-radius:8px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:transparent; color:rgba(240,234,214,0.4);
+  font-family:'Bebas Neue',sans-serif; font-size:13px;
+  cursor:pointer; transition:all 0.2s; text-align:center; line-height:1.3;
+}
+.ventana-btn span { display:block; font-size:9px; letter-spacing:1px; color:rgba(240,234,214,0.25); font-family:'Rajdhani',sans-serif; margin-top:2px; }
+.ventana-btn.active-v { border-width:1px; }
+
+/* RETRASO BADGE */
+.retraso-badge { font-size:9px; padding:2px 6px; border-radius:10px; white-space:nowrap; margin-left:2px; flex-shrink:0; }
+.rb-fresh  { background:rgba(39,174,96,0.2);  color:#27AE60; }
+.rb-medium { background:rgba(244,208,63,0.2); color:#D4AC0D; }
+.rb-cold   { background:rgba(230,74,25,0.2);  color:#E64A19; }
 
 /* Color accents por lotería */
 .gordo-accent .lot-tab.active { border-bottom-color:var(--gordo-o); color:var(--gordo-o); }
@@ -328,6 +351,14 @@ nav {
 
   <!-- ESTADÍSTICAS -->
   <div class="lot-tab-content" id="lot-tab-stats">
+    <!-- Selector ventana de tiempo -->
+    <div class="ventana-label">Ventana de análisis</div>
+    <div class="ventana-btns">
+      <button class="ventana-btn" id="vbtn-v20" onclick="setVentana('v20')">20<span>sorteos</span></button>
+      <button class="ventana-btn" id="vbtn-v50" onclick="setVentana('v50')">50<span>sorteos</span></button>
+      <button class="ventana-btn" id="vbtn-v1a" onclick="setVentana('v1a')">1 año<span>~104 sort.</span></button>
+      <button class="ventana-btn active-v" id="vbtn-hist" onclick="setVentana('hist')">Todo<span id="vbtn-hist-count">—</span></button>
+    </div>
     <div id="stats-area">
       <div class="loading-box"><span class="spin">⚙️</span>Cargando estadísticas...</div>
     </div>
@@ -382,6 +413,7 @@ const CONFIGS = {
 
 let currentLot = null;
 let currentPerfil = 'rand';
+let currentVentana = 'hist';  // ventana activa: v20, v50, v1a, hist
 let qty = 1;
 let statsData = {};  // caché de datos por lotería
 
@@ -420,8 +452,9 @@ function abrirLoteria(lot) {
   document.querySelectorAll('.lot-tab')[0].classList.add('active');
   document.getElementById('lot-tab-generar').classList.add('active');
 
-  // Reset generador
+  // Reset generador y ventana
   resetPerfil();
+  currentVentana = 'hist';
   qty = 1;
   document.getElementById('qty-display').textContent = 1;
   document.getElementById('apuestas-list').innerHTML = '<div class="empty-gen">Elige tu estrategia y pulsa GENERAR</div>';
@@ -442,6 +475,32 @@ function switchLotTab(name, btn) {
   document.querySelectorAll('.lot-tab-content').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('lot-tab-'+name).classList.add('active');
+}
+
+function setVentana(v) {
+  currentVentana = v;
+  // Actualizar botones con color del accent actual
+  const accentColor = {
+    gordo: '#F4D03F', euro: '#FFD700', prim: '#F9A825'
+  }[currentLot] || '#F4D03F';
+
+  ['v20','v50','v1a','hist'].forEach(id => {
+    const btn = document.getElementById('vbtn-'+id);
+    if (!btn) return;
+    btn.classList.remove('active-v');
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    btn.style.background = '';
+  });
+  const active = document.getElementById('vbtn-'+v);
+  if (active) {
+    active.classList.add('active-v');
+    active.style.borderColor = accentColor;
+    active.style.color = accentColor;
+    active.style.background = 'rgba(255,255,255,0.04)';
+  }
+  // Re-renderizar estadísticas con la nueva ventana
+  if (statsData[currentLot]) renderStatsEnArea(currentLot);
 }
 
 // ── PERFIL ─────────────────────────────────────────────────────────────────────
@@ -467,70 +526,181 @@ function rand(min, max) {
   return min + (a[0] % (max - min + 1));
 }
 function randFrom(arr) { return arr[rand(0, arr.length-1)]; }
-function sample(arr, n) {
-  const pool = [...arr]; const out = [];
-  while (out.length < n) {
-    const i = rand(0, pool.length-1);
-    out.push(pool.splice(i,1)[0]);
-  }
-  return out.sort((a,b)=>a-b);
-}
 function pad(n) { return String(n).padStart(2,'0'); }
 
-// ── POOLS POR PERFIL ──────────────────────────────────────────────────────────
-function getPool(lot, campo, min, max, n) {
-  const data = statsData[lot];
-  if (!data || currentPerfil === 'rand') {
-    const all = Array.from({length: max-min+1}, (_,i)=>i+min);
-    return all;
+// ── MUESTREO PONDERADO ────────────────────────────────────────────────────────
+// Selecciona n números únicos de una lista con pesos proporcionales
+function samplePonderado(items, weights, n) {
+  const out = [];
+  const pool = [...items];
+  const w = [...weights];
+  while (out.length < n && pool.length > 0) {
+    const total = w.reduce((s, x) => s + x, 0);
+    const r = Math.random() * total;
+    let acum = 0;
+    for (let i = 0; i < pool.length; i++) {
+      acum += w[i];
+      if (r <= acum) {
+        out.push(pool[i]);
+        pool.splice(i, 1);
+        w.splice(i, 1);
+        break;
+      }
+    }
   }
-  const arr = data[campo] || data.numeros || [];
-  if (currentPerfil === 'hot') return arr.slice(0,15).map(x=>x.numero||x.estrella||x.clave||x.reintegro);
-  if (currentPerfil === 'cold') return arr.slice(-15).map(x=>x.numero||x.estrella||x.clave||x.reintegro);
-  return Array.from({length: max-min+1}, (_,i)=>i+min);
+  return out.sort((a, b) => a - b);
 }
 
-// ── GENERADORES ───────────────────────────────────────────────────────────────
+// ── PESOS POR PERFIL Y VENTANA ────────────────────────────────────────────────
+function getPesos(lot, campo, min, max) {
+  const data = statsData[lot];
+  const todos = Array.from({length: max - min + 1}, (_, i) => i + min);
+
+  if (!data || currentPerfil === 'rand') {
+    return { items: todos, weights: todos.map(() => 1) };
+  }
+
+  // Usar datos de ventana si está disponible, sino histórico completo
+  let arr;
+  if (currentVentana !== 'hist' && data.ventanas && data.ventanas[currentVentana]) {
+    arr = data.ventanas[currentVentana].numeros || [];
+  } else {
+    arr = data[campo] || data.numeros || [];
+  }
+
+  const freqMap = {};
+  arr.forEach(x => {
+    const num = x.numero ?? x.estrella ?? x.clave ?? x.reintegro;
+    freqMap[num] = x.frecuencia || 1;
+  });
+
+  const maxFreq = Math.max(...Object.values(freqMap), 1);
+
+  const weights = todos.map(n => {
+    const f = freqMap[n] || 1;
+    if (currentPerfil === 'hot')  return f;
+    if (currentPerfil === 'cold') return maxFreq - f + 1;
+    return 1;
+  });
+
+  return { items: todos, weights };
+}
+
+// ── FILTROS DE VALIDACIÓN ─────────────────────────────────────────────────────
+// Gordo: suma entre 80-195, paridad no extrema, max 3 consecutivos
+function esValidaGordo(nums) {
+  const suma = nums.reduce((s, n) => s + n, 0);
+  if (suma < 80 || suma > 195) return false;
+  const pares = nums.filter(n => n % 2 === 0).length;
+  if (pares === 0 || pares === 5) return false;
+  let consec = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i + 1] - nums[i] === 1) { consec++; if (consec >= 3) return false; }
+    else consec = 0;
+  }
+  return true;
+}
+// Euromillones: suma entre 70-180, paridad no extrema
+function esValidaEuro(nums) {
+  const suma = nums.reduce((s, n) => s + n, 0);
+  if (suma < 70 || suma > 180) return false;
+  const pares = nums.filter(n => n % 2 === 0).length;
+  if (pares === 0 || pares === 5) return false;
+  return true;
+}
+// Primitiva: suma entre 80-220, paridad no extrema, max 3 consecutivos
+function esValidaPrim(nums) {
+  const suma = nums.reduce((s, n) => s + n, 0);
+  if (suma < 80 || suma > 220) return false;
+  const pares = nums.filter(n => n % 2 === 0).length;
+  if (pares === 0 || pares === 6) return false;
+  let consec = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    if (nums[i + 1] - nums[i] === 1) { consec++; if (consec >= 3) return false; }
+    else consec = 0;
+  }
+  return true;
+}
+
+// ── CLASIFICACIÓN DE CALOR ────────────────────────────────────────────────────
+// Devuelve 'hot' | 'warm' | 'cold' para cada número según percentil
+function clasificarCalor(lot, campo, numero) {
+  const data = statsData[lot];
+  if (!data) return 'warm';
+  const arr = (data[campo] || data.numeros || []);
+  const n = arr.length;
+  if (n === 0) return 'warm';
+  const idx = arr.findIndex(x => (x.numero ?? x.estrella) === numero);
+  if (idx < 0) return 'warm';
+  const pct = idx / n;
+  if (pct < 0.33) return 'hot';
+  if (pct < 0.67) return 'warm';
+  return 'cold';
+}
+
+// ── GENERADORES CON MOTOR INTELIGENTE ─────────────────────────────────────────
+function generarConFiltro(lot, campo, min, max, n, validador) {
+  const { items, weights } = getPesos(lot, campo, min, max);
+  for (let i = 0; i < 500; i++) {
+    const nums = samplePonderado(items, weights, n);
+    if (!validador || validador(nums)) return nums;
+  }
+  // Fallback sin filtro si no converge
+  return samplePonderado(items, weights, n);
+}
+
 function generarGordo() {
-  const pool = getPool('gordo','numeros',1,54,54);
-  const nums = sample(pool,5);
-  const clavePool = getPool('gordo','claves',0,9,10);
-  const clave = randFrom(clavePool);
-  return {nums, clave};
+  const nums = generarConFiltro('gordo', 'numeros', 1, 54, 5, esValidaGordo);
+  const { items: ci, weights: cw } = getPesos('gordo', 'claves', 0, 9);
+  const clave = samplePonderado(ci, cw, 1)[0];
+  return { nums, clave };
 }
 function generarEuro() {
-  const pool = getPool('euro','numeros',1,50,50);
-  const nums = sample(pool,5);
-  const estPool = getPool('euro','estrellas',1,12,12);
-  const ests = sample(estPool.filter(x=>x>=1&&x<=12),2);
-  return {nums, ests};
+  const nums = generarConFiltro('euro', 'numeros', 1, 50, 5, esValidaEuro);
+  const { items: ei, weights: ew } = getPesos('euro', 'estrellas', 1, 12);
+  const ests = samplePonderado(ei, ew, 2);
+  return { nums, ests };
 }
 function generarPrim() {
-  const pool = getPool('prim','numeros',1,49,49);
-  const nums = sample(pool,6);
-  const compPool = Array.from({length:49},(_,i)=>i+1);
-  const comp = randFrom(compPool);
-  const rein = rand(0,9);
-  return {nums, comp, rein};
+  const nums = generarConFiltro('prim', 'numeros', 1, 49, 6, esValidaPrim);
+  const comp = rand(1, 49);
+  const rein = rand(0, 9);
+  return { nums, comp, rein };
 }
 
-// ── RENDER BOLAS ──────────────────────────────────────────────────────────────
+// ── RENDER BOLAS CON INDICADOR DE CALOR ───────────────────────────────────────
+const CALOR_STYLE = {
+  hot:  'box-shadow:0 0 10px rgba(230,74,25,0.8),0 0 20px rgba(230,74,25,0.4)',
+  warm: '',
+  cold: 'box-shadow:0 0 10px rgba(25,118,210,0.8),0 0 20px rgba(25,118,210,0.4)'
+};
+const CALOR_LABEL = { hot:'🔥', warm:'', cold:'❄️' };
+
 function renderBolasGordo(ap) {
-  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-gordo-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
-    +'<span class="sep">|</span>'
-    +`<div class="bola-wrap"><div class="bola b-gordo-c">${pad(ap.clave)}</div><div class="bola-lbl">Clave</div></div>`;
+  return ap.nums.map(n => {
+    const c = clasificarCalor('gordo','numeros',n);
+    return `<div class="bola-wrap"><div class="bola b-gordo-n" style="${CALOR_STYLE[c]}">${pad(n)}</div><div class="bola-lbl">${CALOR_LABEL[c]||'N.º'}</div></div>`;
+  }).join('')
+  + '<span class="sep">|</span>'
+  + `<div class="bola-wrap"><div class="bola b-gordo-c">${pad(ap.clave)}</div><div class="bola-lbl">Clave</div></div>`;
 }
 function renderBolasEuro(ap) {
-  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-euro-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
-    +'<span class="sep">|</span>'
-    +ap.ests.map(e=>`<div class="bola-wrap"><div class="bola b-euro-e">★${pad(e)}</div><div class="bola-lbl">★</div></div>`).join('');
+  return ap.nums.map(n => {
+    const c = clasificarCalor('euro','numeros',n);
+    return `<div class="bola-wrap"><div class="bola b-euro-n" style="${CALOR_STYLE[c]}">${pad(n)}</div><div class="bola-lbl">${CALOR_LABEL[c]||'N.º'}</div></div>`;
+  }).join('')
+  + '<span class="sep">|</span>'
+  + ap.ests.map(e => `<div class="bola-wrap"><div class="bola b-euro-e">★${pad(e)}</div><div class="bola-lbl">★</div></div>`).join('');
 }
 function renderBolasPrim(ap) {
-  return ap.nums.map(n=>`<div class="bola-wrap"><div class="bola b-prim-n">${pad(n)}</div><div class="bola-lbl">N.º</div></div>`).join('')
-    +'<span class="sep">|</span>'
-    +`<div class="bola-wrap"><div class="bola b-prim-c">${pad(ap.comp)}</div><div class="bola-lbl">Comp</div></div>`
-    +'<span class="sep">·</span>'
-    +`<div class="bola-wrap"><div class="bola b-prim-r">${ap.rein}</div><div class="bola-lbl">R</div></div>`;
+  return ap.nums.map(n => {
+    const c = clasificarCalor('prim','numeros',n);
+    return `<div class="bola-wrap"><div class="bola b-prim-n" style="${CALOR_STYLE[c]}">${pad(n)}</div><div class="bola-lbl">${CALOR_LABEL[c]||'N.º'}</div></div>`;
+  }).join('')
+  + '<span class="sep">|</span>'
+  + `<div class="bola-wrap"><div class="bola b-prim-c">${pad(ap.comp)}</div><div class="bola-lbl">Comp</div></div>`
+  + '<span class="sep">·</span>'
+  + `<div class="bola-wrap"><div class="bola b-prim-r">${ap.rein}</div><div class="bola-lbl">R</div></div>`;
 }
 
 // ── GENERAR ───────────────────────────────────────────────────────────────────
@@ -543,6 +713,9 @@ function generar() {
 
   for(let i=0; i<qty; i++) {
     const ap = cfg.generar();
+    // Calcular metadatos de la apuesta
+    const suma = ap.nums.reduce((s,n)=>s+n,0);
+    const pares = ap.nums.filter(n=>n%2===0).length;
     const card = document.createElement('div');
     card.className = 'apuesta-card';
     card.style.background = 'var(--panel)';
@@ -552,7 +725,11 @@ function generar() {
         <span class="ap-num">Apuesta ${i+1}</span>
         <span class="ap-perfil ${perfilTag[currentPerfil]}">${perfilLabels[currentPerfil]}</span>
       </div>
-      <div class="bolas-row">${cfg.bolas(ap)}</div>`;
+      <div class="bolas-row">${cfg.bolas(ap)}</div>
+      <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+        <span style="font-size:10px;letter-spacing:1px;color:rgba(240,234,214,0.35)">Σ ${suma}</span>
+        <span style="font-size:10px;letter-spacing:1px;color:rgba(240,234,214,0.35)">${pares}P · ${ap.nums.length-pares}I</span>
+      </div>`;
     list.appendChild(card);
   }
 }
@@ -580,80 +757,117 @@ function actualizarPreview(lot) {
   const data = statsData[lot];
   if (!data) return;
   const top = (data.top10_mas_frecuentes||[])[0];
-  const pills = document.querySelectorAll(`#preview-${lot} .stat-pill-val`);
+  const container = document.getElementById('preview-'+lot);
+  if (!container) return;
+  const pills = container.querySelectorAll('.stat-pill-val');
   if (pills[0]) pills[0].textContent = data.total_sorteos;
   if (pills[1] && top) pills[1].textContent = pad(top.numero);
   if (pills[2]) pills[2].textContent = data.ultima_actualizacion?.split(' ')[0]||'—';
 }
 
-function barRow(bola_class, label, freq, maxFreq, pct, fill_class) {
+function retrasobadge(n) {
+  if (n === undefined || n === null) return '';
+  const cls = n <= 3 ? 'rb-fresh' : n <= 10 ? 'rb-medium' : 'rb-cold';
+  return `<span class="retraso-badge ${cls}">⏱${n}</span>`;
+}
+
+function barRow(bola_class, label, freq, maxFreq, pct, fill_class, retraso) {
   return `<div class="bar-row">
     <div class="bar-bola ${bola_class}">${label}</div>
     <div class="bar-track"><div class="bar-fill ${fill_class}" style="width:${Math.max(8,(freq/maxFreq*100)).toFixed(1)}%"><span class="bar-count">${freq}×</span></div></div>
     <span class="bar-pct">${pct}%</span>
+    ${retrasobadge(retraso)}
   </div>`;
 }
 
 function renderStatsGordo(data) {
-  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  // Elegir dataset según ventana
+  const esVentana = currentVentana !== 'hist' && data.ventanas && data.ventanas[currentVentana];
+  const top10 = esVentana ? data.ventanas[currentVentana].numeros : data.top10_mas_frecuentes;
+  const bot10 = esVentana ? [] : data.top10_menos_frecuentes;
+  const nSorteos = esVentana ? data.ventanas[currentVentana].sorteos : data.total_sorteos;
+  const maxF = top10.length ? top10[0].frecuencia : 1;
+
+  // Actualizar count en botón "Todo"
+  const hc = document.getElementById('vbtn-hist-count');
+  if (hc) hc.textContent = data.total_sorteos;
+
   let html = `<div class="stats-meta">
-    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">${nSorteos}</span><span class="meta-lbl">Sorteos</span></div>
     <div class="meta-item"><span class="meta-val">${data.fecha_ultimo_sorteo}</span><span class="meta-lbl">Último</span></div>
     <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
   </div>
   <div class="stats-title">🔥 Más frecuentes</div>`;
-  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-gordo-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill'); });
-  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
-  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-gordo-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill'); });
-  html+=`<div class="stats-title">⭐ Claves</div>`;
-  const maxC=data.claves[0].frecuencia;
-  data.claves.forEach(x=>{ html+=barRow('b-gordo-c',x.clave,x.frecuencia,maxC,x.porcentaje,'bar-fill'); });
+  top10.forEach(x => { html += barRow('b-gordo-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-gordo', x.dias_retraso); });
+  if (!esVentana) {
+    html += `<div class="stats-title">❄️ Menos frecuentes</div>`;
+    bot10.forEach(x => { html += barRow('b-gordo-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-gordo', x.dias_retraso); });
+    html += `<div class="stats-title">⭐ Claves</div>`;
+    const maxC = data.claves[0].frecuencia;
+    data.claves.forEach(x => { html += barRow('b-gordo-c', x.clave, x.frecuencia, maxC, x.porcentaje, 'bar-fill-gordo', x.dias_retraso); });
+  }
   document.getElementById('stats-area').innerHTML = html;
-  // Colores barras
-  document.querySelectorAll('#stats-area .bar-fill').forEach(b=>b.style.background='linear-gradient(90deg,#922B21,#C0392B)');
+  document.querySelectorAll('#stats-area .bar-fill-gordo').forEach(b => b.style.background = 'linear-gradient(90deg,#922B21,#C0392B)');
 }
 
 function renderStatsEuro(data) {
-  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  const esVentana = currentVentana !== 'hist' && data.ventanas && data.ventanas[currentVentana];
+  const top10 = esVentana ? data.ventanas[currentVentana].numeros : data.top10_mas_frecuentes;
+  const bot10 = esVentana ? [] : data.top10_menos_frecuentes;
+  const nSorteos = esVentana ? data.ventanas[currentVentana].sorteos : data.total_sorteos;
+  const maxF = top10.length ? top10[0].frecuencia : 1;
+  const hc = document.getElementById('vbtn-hist-count');
+  if (hc) hc.textContent = data.total_sorteos;
+
   let html = `<div class="stats-meta">
-    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">${nSorteos}</span><span class="meta-lbl">Sorteos</span></div>
     <div class="meta-item"><span class="meta-val">${data.fecha_ultimo_sorteo}</span><span class="meta-lbl">Último</span></div>
     <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
   </div>
   <div class="stats-title">🔥 Más frecuentes</div>`;
-  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-euro-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-euro'); });
-  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
-  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-euro-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-euro'); });
-  html+=`<div class="stats-title">★ Estrellas</div>`;
-  const maxS=data.top5_estrellas[0].frecuencia;
-  data.top5_estrellas.forEach(x=>{ html+=barRow('b-euro-e','★'+pad(x.estrella),x.frecuencia,maxS,x.porcentaje,'bar-fill-euro-s'); });
+  top10.forEach(x => { html += barRow('b-euro-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-euro', x.dias_retraso); });
+  if (!esVentana) {
+    html += `<div class="stats-title">❄️ Menos frecuentes</div>`;
+    bot10.forEach(x => { html += barRow('b-euro-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-euro', x.dias_retraso); });
+    html += `<div class="stats-title">★ Estrellas</div>`;
+    const maxS = data.top5_estrellas[0].frecuencia;
+    data.top5_estrellas.forEach(x => { html += barRow('b-euro-e', '★'+pad(x.estrella), x.frecuencia, maxS, x.porcentaje, 'bar-fill-euro-s', x.dias_retraso); });
+  }
   document.getElementById('stats-area').innerHTML = html;
-  document.querySelectorAll('#stats-area .bar-fill-euro').forEach(b=>b.style.background='linear-gradient(90deg,#0D47A1,#1565C0)');
-  document.querySelectorAll('#stats-area .bar-fill-euro-s').forEach(b=>b.style.background='linear-gradient(90deg,#FF8F00,#FFD700)');
+  document.querySelectorAll('#stats-area .bar-fill-euro').forEach(b => b.style.background = 'linear-gradient(90deg,#0D47A1,#1565C0)');
+  document.querySelectorAll('#stats-area .bar-fill-euro-s').forEach(b => b.style.background = 'linear-gradient(90deg,#FF8F00,#FFD700)');
 }
 
 function renderStatsPrim(data) {
-  const maxF = data.top10_mas_frecuentes[0].frecuencia;
+  const esVentana = currentVentana !== 'hist' && data.ventanas && data.ventanas[currentVentana];
+  const top10 = esVentana ? data.ventanas[currentVentana].numeros : data.top10_mas_frecuentes;
+  const bot10 = esVentana ? [] : data.top10_menos_frecuentes;
+  const nSorteos = esVentana ? data.ventanas[currentVentana].sorteos : data.total_sorteos;
+  const maxF = top10.length ? top10[0].frecuencia : 1;
+  const hc = document.getElementById('vbtn-hist-count');
+  if (hc) hc.textContent = data.total_sorteos;
+
   let html = `<div class="stats-meta">
-    <div class="meta-item"><span class="meta-val">${data.total_sorteos}</span><span class="meta-lbl">Sorteos</span></div>
+    <div class="meta-item"><span class="meta-val">${nSorteos}</span><span class="meta-lbl">Sorteos</span></div>
     <div class="meta-item"><span class="meta-val">1985</span><span class="meta-lbl">Desde</span></div>
     <div class="meta-item"><span class="meta-val">${data.ultima_actualizacion.split(' ')[0]}</span><span class="meta-lbl">Actualizado</span></div>
   </div>
   <div class="stats-title">🔥 Más frecuentes</div>`;
-  data.top10_mas_frecuentes.forEach(x=>{ html+=barRow('b-prim-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-prim'); });
-  html+=`<div class="stats-title">❄️ Menos frecuentes</div>`;
-  data.top10_menos_frecuentes.forEach(x=>{ html+=barRow('b-prim-n',pad(x.numero),x.frecuencia,maxF,x.porcentaje,'bar-fill-prim'); });
-  html+=`<div class="stats-title">🔴 Complementario</div>`;
-  const maxC=data.complementarios[0].frecuencia;
-  data.complementarios.forEach(x=>{ html+=barRow('b-prim-c',pad(x.numero),x.frecuencia,maxC,x.porcentaje,'bar-fill-comp'); });
+  top10.forEach(x => { html += barRow('b-prim-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-prim', x.dias_retraso); });
+  if (!esVentana) {
+    html += `<div class="stats-title">❄️ Menos frecuentes</div>`;
+    bot10.forEach(x => { html += barRow('b-prim-n', pad(x.numero), x.frecuencia, maxF, x.porcentaje, 'bar-fill-prim', x.dias_retraso); });
+    html += `<div class="stats-title">🔴 Complementario</div>`;
+    const maxC = data.complementarios[0].frecuencia;
+    data.complementarios.forEach(x => { html += barRow('b-prim-c', pad(x.numero), x.frecuencia, maxC, x.porcentaje, 'bar-fill-comp', x.dias_retraso); });
+  }
   document.getElementById('stats-area').innerHTML = html;
-  document.querySelectorAll('#stats-area .bar-fill-prim').forEach(b=>b.style.background='linear-gradient(90deg,#1B5E20,#43A047)');
-  document.querySelectorAll('#stats-area .bar-fill-comp').forEach(b=>b.style.background='linear-gradient(90deg,#B71C1C,#E53935)');
+  document.querySelectorAll('#stats-area .bar-fill-prim').forEach(b => b.style.background = 'linear-gradient(90deg,#1B5E20,#43A047)');
+  document.querySelectorAll('#stats-area .bar-fill-comp').forEach(b => b.style.background = 'linear-gradient(90deg,#B71C1C,#E53935)');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-// Precargar stats de las tres loterías al arrancar
-window.addEventListener('load', ()=>{
+document.addEventListener('DOMContentLoaded', ()=>{
   ['gordo','euro','prim'].forEach(lot=>{
     fetch(CONFIGS[lot].url+'?t='+Date.now())
       .then(r=>r.json())
@@ -662,5 +876,6 @@ window.addEventListener('load', ()=>{
   });
 });
 </script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(()=>{});}</script>
 </body>
 </html>
