@@ -1,4 +1,4 @@
-const CACHE = 'amimanera-v3';
+const CACHE = 'amimanera-v4';
 const PRECACHE = [
   '/AmiManera.html',
   '/manifest.json',
@@ -30,15 +30,12 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const fetchPromise = fetch(e.request).then(resp => {
-        if (resp && resp.status === 200) {
-          const clone = resp.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
-        return resp;
-      }).catch(() => cached);
-      return cached || fetchPromise;
-    })
+    fetch(e.request).then(resp => {
+      if (resp && resp.status === 200) {
+        const clone = resp.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+      }
+      return resp;
+    }).catch(() => caches.match(e.request))
   );
 });
