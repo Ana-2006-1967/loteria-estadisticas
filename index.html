@@ -4,7 +4,16 @@
 <meta charset="UTF-8">
 <meta http-equiv="refresh" content="0;url=/AmiManera.html">
 <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#080808">
 <title>A mi manera</title>
 </head>
-<body></body>
+<body>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(r => console.log('SW registrado:', r.scope))
+    .catch(e => console.log('SW error:', e));
+}
+</script>
+</body>
 </html>
