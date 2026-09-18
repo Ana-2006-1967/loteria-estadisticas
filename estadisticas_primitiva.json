@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "15/09/2026 23:48",
+  "ultima_actualizacion": "18/09/2026 23:43",
   "total_sorteos": 4159,
   "fecha_primer_sorteo": "17/10/1985",
   "fecha_ultimo_sorteo": "9/07/2026",
@@ -679,67 +679,67 @@
       ]
     },
     "v1a": {
-      "sorteos": 126,
+      "sorteos": 125,
       "numeros": [
         {
           "numero": 12,
           "frecuencia": 24,
-          "porcentaje": 19.05,
+          "porcentaje": 19.2,
           "dias_retraso": 3
         },
         {
           "numero": 2,
           "frecuencia": 22,
-          "porcentaje": 17.46,
+          "porcentaje": 17.6,
           "dias_retraso": 13
         },
         {
           "numero": 25,
           "frecuencia": 21,
-          "porcentaje": 16.67,
+          "porcentaje": 16.8,
           "dias_retraso": 2
         },
         {
           "numero": 36,
           "frecuencia": 21,
-          "porcentaje": 16.67,
+          "porcentaje": 16.8,
           "dias_retraso": 5
         },
         {
           "numero": 13,
           "frecuencia": 19,
-          "porcentaje": 15.08,
+          "porcentaje": 15.2,
           "dias_retraso": 1
         },
         {
           "numero": 16,
           "frecuencia": 19,
-          "porcentaje": 15.08,
+          "porcentaje": 15.2,
           "dias_retraso": 14
         },
         {
           "numero": 18,
           "frecuencia": 19,
-          "porcentaje": 15.08,
+          "porcentaje": 15.2,
           "dias_retraso": 4
         },
         {
           "numero": 34,
           "frecuencia": 19,
-          "porcentaje": 15.08,
+          "porcentaje": 15.2,
           "dias_retraso": 17
         },
         {
           "numero": 40,
           "frecuencia": 19,
-          "porcentaje": 15.08,
+          "porcentaje": 15.2,
           "dias_retraso": 3
         },
         {
-          "numero": 17,
+          "numero": 22,
           "frecuencia": 18,
-          "porcentaje": 14.29,
-          "dias_retraso": 4
+          "porcentaje": 14.4,
+          "dias_retraso": 0
         }
       ]
     }
