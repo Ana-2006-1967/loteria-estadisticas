@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "18/10/2026 22:51",
+  "ultima_actualizacion": "21/10/2026 00:13",
   "total_sorteos": 4159,
   "fecha_primer_sorteo": "17/10/1985",
   "fecha_ultimo_sorteo": "9/07/2026",
@@ -679,66 +679,66 @@
       ]
     },
     "v1a": {
-      "sorteos": 112,
+      "sorteos": 111,
       "numeros": [
         {
           "numero": 12,
           "frecuencia": 22,
-          "porcentaje": 19.64,
+          "porcentaje": 19.82,
           "dias_retraso": 3
         },
         {
           "numero": 2,
-          "frecuencia": 21,
-          "porcentaje": 18.75,
+          "frecuencia": 20,
+          "porcentaje": 18.02,
           "dias_retraso": 13
         },
         {
           "numero": 36,
           "frecuencia": 20,
-          "porcentaje": 17.86,
+          "porcentaje": 18.02,
           "dias_retraso": 5
         },
         {
           "numero": 40,
           "frecuencia": 19,
-          "porcentaje": 16.96,
+          "porcentaje": 17.12,
           "dias_retraso": 3
         },
         {
           "numero": 13,
           "frecuencia": 18,
-          "porcentaje": 16.07,
+          "porcentaje": 16.22,
           "dias_retraso": 1
         },
         {
           "numero": 16,
           "frecuencia": 18,
-          "porcentaje": 16.07,
+          "porcentaje": 16.22,
           "dias_retraso": 14
         },
         {
           "numero": 22,
           "frecuencia": 18,
-          "porcentaje": 16.07,
+          "porcentaje": 16.22,
           "dias_retraso": 0
         },
         {
           "numero": 25,
           "frecuencia": 18,
-          "porcentaje": 16.07,
+          "porcentaje": 16.22,
           "dias_retraso": 2
         },
         {
           "numero": 43,
           "frecuencia": 18,
-          "porcentaje": 16.07,
+          "porcentaje": 16.22,
           "dias_retraso": 0
         },
         {
           "numero": 17,
           "frecuencia": 17,
-          "porcentaje": 15.18,
+          "porcentaje": 15.32,
           "dias_retraso": 4
         }
       ]
