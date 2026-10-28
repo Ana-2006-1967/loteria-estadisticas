@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "25/10/2026 23:03",
+  "ultima_actualizacion": "28/10/2026 00:48",
   "total_sorteos": 4159,
   "fecha_primer_sorteo": "17/10/1985",
   "fecha_ultimo_sorteo": "9/07/2026",
@@ -679,67 +679,67 @@
       ]
     },
     "v1a": {
-      "sorteos": 109,
+      "sorteos": 108,
       "numeros": [
         {
           "numero": 12,
           "frecuencia": 22,
-          "porcentaje": 20.18,
+          "porcentaje": 20.37,
           "dias_retraso": 3
         },
         {
           "numero": 2,
           "frecuencia": 20,
-          "porcentaje": 18.35,
+          "porcentaje": 18.52,
           "dias_retraso": 13
         },
         {
           "numero": 36,
           "frecuencia": 19,
-          "porcentaje": 17.43,
+          "porcentaje": 17.59,
           "dias_retraso": 5
         },
         {
           "numero": 40,
           "frecuencia": 19,
-          "porcentaje": 17.43,
+          "porcentaje": 17.59,
           "dias_retraso": 3
         },
         {
           "numero": 16,
           "frecuencia": 18,
-          "porcentaje": 16.51,
+          "porcentaje": 16.67,
           "dias_retraso": 14
         },
         {
           "numero": 22,
           "frecuencia": 18,
-          "porcentaje": 16.51,
+          "porcentaje": 16.67,
           "dias_retraso": 0
         },
         {
           "numero": 25,
           "frecuencia": 18,
-          "porcentaje": 16.51,
+          "porcentaje": 16.67,
           "dias_retraso": 2
         },
         {
           "numero": 43,
           "frecuencia": 18,
-          "porcentaje": 16.51,
+          "porcentaje": 16.67,
           "dias_retraso": 0
-        },
-        {
-          "numero": 13,
-          "frecuencia": 17,
-          "porcentaje": 15.6,
-          "dias_retraso": 1
         },
         {
           "numero": 30,
           "frecuencia": 17,
-          "porcentaje": 15.6,
+          "porcentaje": 15.74,
           "dias_retraso": 0
+        },
+        {
+          "numero": 13,
+          "frecuencia": 16,
+          "porcentaje": 14.81,
+          "dias_retraso": 1
         }
       ]
     }
