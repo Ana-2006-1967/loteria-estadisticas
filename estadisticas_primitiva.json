@@ -1,5 +1,5 @@
 {
-  "ultima_actualizacion": "14/11/2026 01:53",
+  "ultima_actualizacion": "16/11/2026 00:50",
   "total_sorteos": 4159,
   "fecha_primer_sorteo": "17/10/1985",
   "fecha_ultimo_sorteo": "9/07/2026",
@@ -679,66 +679,66 @@
       ]
     },
     "v1a": {
-      "sorteos": 101,
+      "sorteos": 100,
       "numeros": [
         {
           "numero": 12,
           "frecuencia": 22,
-          "porcentaje": 21.78,
+          "porcentaje": 22.0,
           "dias_retraso": 3
         },
         {
           "numero": 2,
           "frecuencia": 18,
-          "porcentaje": 17.82,
+          "porcentaje": 18.0,
           "dias_retraso": 13
         },
         {
           "numero": 36,
           "frecuencia": 18,
-          "porcentaje": 17.82,
+          "porcentaje": 18.0,
           "dias_retraso": 5
         },
         {
           "numero": 43,
           "frecuencia": 18,
-          "porcentaje": 17.82,
+          "porcentaje": 18.0,
           "dias_retraso": 0
         },
         {
           "numero": 22,
           "frecuencia": 17,
-          "porcentaje": 16.83,
+          "porcentaje": 17.0,
           "dias_retraso": 0
         },
         {
           "numero": 30,
           "frecuencia": 17,
-          "porcentaje": 16.83,
+          "porcentaje": 17.0,
           "dias_retraso": 0
         },
         {
           "numero": 40,
           "frecuencia": 17,
-          "porcentaje": 16.83,
+          "porcentaje": 17.0,
           "dias_retraso": 3
         },
         {
           "numero": 13,
           "frecuencia": 16,
-          "porcentaje": 15.84,
+          "porcentaje": 16.0,
           "dias_retraso": 1
         },
         {
           "numero": 16,
           "frecuencia": 16,
-          "porcentaje": 15.84,
+          "porcentaje": 16.0,
           "dias_retraso": 14
         },
         {
           "numero": 33,
           "frecuencia": 16,
-          "porcentaje": 15.84,
+          "porcentaje": 16.0,
           "dias_retraso": 1
         }
       ]
